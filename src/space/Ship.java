@@ -15,10 +15,14 @@ import vector.Vector2d;
  *
  * @author sailfish
  */
-public class Ship implements Active, Positionable{
+public class Ship implements Active, Drawable{
     private Node node;
     private Point2d position;
     private Vector2d velocity;
+    
+    public static final IconType icon = IconType.SHIP;
+    
+    
     
     public Ship(Node node, Point2d position, Vector2d velocity){
         this.node = node;
@@ -72,5 +76,10 @@ public class Ship implements Active, Positionable{
     public ReadOnlyStringProperty positionStringProperty() { return positionString; }
     public String getPositionString() { return positionString.get(); }
     private void setPositionString(String value) { positionString.set(value); }
+
+    @Override
+    public IconType getIconType() {
+        return icon;
+    }
 
 }

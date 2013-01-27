@@ -4,15 +4,13 @@
  */
 package space;
 
-import vector.Point2d;
-
 /**
  *
  * @author sailfish
  */
-public interface Positionable {
+public interface Drawable extends Positionable {
+    
+    public IconType getIconType();
 
-    public Point2d getPos();
-   
 
 }
