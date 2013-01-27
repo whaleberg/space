@@ -6,11 +6,7 @@
 package space;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import javafx.beans.binding.Binding;
-import javafx.beans.binding.ListBinding;
-import javafx.beans.value.ObservableListValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
@@ -18,12 +14,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -91,10 +87,32 @@ public class MainViewController
             }
        });
        
+       list.setCellFactory(new Callback<ListView<Ship>, ListCell<Ship>>() {
+
+            @Override
+            public ListCell<Ship> call(ListView<Ship> p) {
+               return new PositionCell();
+            }
+        });
+       
        
 
        
         
+    }
+
+    private static class PositionCell extends ListCell<Ship> {
+        
+        @Override
+        public void updateItem(Ship item, boolean empty){
+            super.updateItem(item, empty);
+            Label lbl = new Label();
+            if(item != null){
+                lbl.textProperty().bind(item.positionStringProperty());
+                setGraphic(lbl);
+            }
+        }
+
     }
 
         

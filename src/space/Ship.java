@@ -5,6 +5,9 @@
 package space;
 
 
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import vector.Point2d;
 import vector.Vector2d;
@@ -29,7 +32,7 @@ public class Ship implements Active, Positionable{
         return node;
     }
     
-    public String getPositionString(){
+    public String getPositionAsAString(){
         return node.getLayoutX() +"/" + node.getLayoutY();
     }
     
@@ -46,11 +49,8 @@ public class Ship implements Active, Positionable{
     }
     
     public final void relocate(Point2d newPosition){
-        this.relocate(newPosition.getX(),newPosition.getY());
-    }
-    
-    public void relocate(double x, double y){
-        node.relocate(x, y);
+        node.relocate(newPosition.getX(),newPosition.getY());
+        setPositionString(getPositionAsAString());
     }
 
     @Override
@@ -59,6 +59,17 @@ public class Ship implements Active, Positionable{
     }
     @Override
     public String toString(){
-        return this.getPositionString();
+        return this.getPositionAsAString();
     }
+    
+    
+
+    
+
+
+    private StringProperty positionString = new SimpleStringProperty();
+    public ReadOnlyStringProperty positionStringProperty() { return positionString; }
+    public String getPositionString() { return positionString.get(); }
+    private void setPositionString(String value) { positionString.set(value); }
+
 }
