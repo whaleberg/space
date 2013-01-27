@@ -128,7 +128,7 @@ public class Point2d implements java.io.Serializable {
     }
     
     public double getX(){
-        return vect.getY();
+        return vect.getX();
     }
     public double getY(){
         return vect.getY();
