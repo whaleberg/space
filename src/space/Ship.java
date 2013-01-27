@@ -57,4 +57,8 @@ public class Ship implements Active, Positionable{
     public Point2d getPos() {
         return new Point2d(this.position);
     }
+    @Override
+    public String toString(){
+        return this.getPositionString();
+    }
 }
