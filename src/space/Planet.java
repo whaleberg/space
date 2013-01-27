@@ -4,9 +4,8 @@
  */
 package space;
 
-import java.util.Collection;
-import javax.vecmath.Point2d;
-import javax.vecmath.Vector2d;
+import vector.Point2d;
+import vector.Vector2d;
 
 /**
  *
@@ -25,12 +24,11 @@ public class Planet implements Orbiter, Positionable{
         double changeInAngle = (seconds / orbitalPeriod )*2 * Math.PI;
         orbitalAngle = changeInAngle + orbitalAngle;
         if(orbitalAngle > 2*Math.PI){
-            orbitalAngle = orbitalAngle-Math.PI;
+            orbitalAngle -= Math.PI;
         }
-        Vector2d displace = new Vector2d(Math.sin(orbitalAngle), Math.cos(orbitalAngle));
-        displace.scale(orbitalRadius);
-        displace.add(parent.getPos());
-        this.body.setPos( displace );
+        Vector2d displace = new Vector2d(Math.sin(orbitalAngle), Math.cos(orbitalAngle))
+                .scale(orbitalRadius);
+        this.body.setPos(parent.getPos().translate(displace));
         
     }
     

@@ -6,8 +6,8 @@ package space;
 
 
 import javafx.scene.Node;
-import javax.vecmath.Point2d;
-import javax.vecmath.Vector2d;
+import vector.Point2d;
+import vector.Vector2d;
 /**
  *
  * @author sailfish
@@ -40,12 +40,13 @@ public class Ship implements Active, Positionable{
     }
     
     private void travel(long seconds){
-       this.position.scaleAdd(seconds,this.velocity,this.position);
-       relocate(position);
+       Point2d newPos = this.position.translate(velocity.scale(seconds));
+      
+       relocate(newPos);
     }
     
     public final void relocate(Point2d newPosition){
-        this.relocate(newPosition.x,newPosition.y);
+        this.relocate(newPosition.getX(),newPosition.getY());
     }
     
     public void relocate(double x, double y){

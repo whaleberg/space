@@ -4,7 +4,7 @@
  */
 package space;
 
-import javax.vecmath.Point2d;
+import vector.Point2d;
 
 /**
  *
@@ -23,14 +23,14 @@ public final class Rect {
     
     public Rect(Point2d p1, Point2d p2){
          
-       this.topLeft = new Point2d(Math.min(p1.x, p2.x), Math.min(p1.y,p2.y));
-       this.height = Math.abs(p1.x - p2.x);
-       this.width = Math.abs(p1.y - p2.y);
+       this.topLeft = new Point2d(Math.min(p1.getX(), p2.getX()), Math.min(p1.getY(),p2.getY()));
+       this.height = Math.abs(p1.getX() - p2.getX());
+       this.width = Math.abs(p1.getY() - p2.getY());
     }
     
     public boolean contains(Point2d p){
-        return ( (p.x >= topLeft.x && p.x <= topLeft.x+width)) 
-            && (p.y >= topLeft.y && p.y <= topLeft.y + height);
+        return ( (p.getX() >= topLeft.getX() && p.getX() <= topLeft.getX()+width)) 
+            && (p.getY() >= topLeft.getY() && p.getY() <= topLeft.getY() + height);
     }
 
 

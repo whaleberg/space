@@ -29,8 +29,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
-import javax.vecmath.Point2d;
-import javax.vecmath.Vector2d;
+import vector.Point2d;
+import vector.Vector2d;
 
 
 public class MainViewController

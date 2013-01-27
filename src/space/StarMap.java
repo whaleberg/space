@@ -5,11 +5,10 @@
 package space;
 
 
-import com.sun.javafx.geom.RectBounds;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.shape.Rectangle;
-import javax.vecmath.Point2d;
+import vector.Point2d;
+
 
 /**
  *
@@ -49,10 +48,11 @@ public class StarMap {
        
        for(Positionable p : map){
            Point2d pos = p.getPos();
-           l = Math.min(l, pos.x);
-           r = Math.max(r,pos.x);
-           t = Math.min(t, pos.y);
-           b = Math.max(b, pos.y);
+           
+           l = Math.min(l, pos.getX());
+           r = Math.max(r,pos.getX());
+           t = Math.min(t, pos.getY());
+           b = Math.max(b, pos.getY());
        }
        Point2d lt = new Point2d(l, t);
        Point2d rb = new Point2d(r, b);

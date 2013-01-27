@@ -4,7 +4,7 @@
  */
 package space;
 
-import javax.vecmath.Point2d;
+import vector.Point2d;
 
 /**
  *
