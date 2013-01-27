@@ -33,7 +33,7 @@ public class Ship implements Active, Positionable{
     }
     
     public String getPositionAsAString(){
-        return node.getLayoutX() +"/" + node.getLayoutY();
+        return position.getX() +"/" + position.getY();
     }
     
     
@@ -50,6 +50,7 @@ public class Ship implements Active, Positionable{
     
     public final void relocate(Point2d newPosition){
         node.relocate(newPosition.getX(),newPosition.getY());
+        position = newPosition;
         setPositionString(getPositionAsAString());
     }
 
