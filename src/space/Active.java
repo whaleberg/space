@@ -8,7 +8,7 @@ package space;
  *
  * @author sailfish
  */
-public interface Active {
+public interface Active extends Drawable{
     
     public void age(long seconds);
     

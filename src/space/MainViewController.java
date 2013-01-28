@@ -37,7 +37,7 @@ public class MainViewController
 
     @FXML //  fx:id="list"
     private ListView<Ship> list; // Value injected by FXMLLoader
-
+  
     @FXML //  fx:id="pane"
     private Pane pane; // Value injected by FXMLLoader
 
@@ -46,11 +46,13 @@ public class MainViewController
     
     private final Map<Drawable, Node> drawableMap= new IdentityHashMap<>();
     
-    private final ObservableList<Ship> ships = FXCollections.observableArrayList();
+
+    private final ObservableList<Active> actives = FXCollections.observableArrayList();
+    
     public void handleButton(ActionEvent event){
-     for (Ship s: list.getItems()){
-         s.age(10);
-         updateNode(s);
+     for (Active a : actives){
+         a.age(10);
+         updateNode(a);
      }
     }
 
@@ -61,7 +63,12 @@ public class MainViewController
                        rect.relocate(d.getPos().getX(), d.getPos().getY());
                        n = rect; 
                        break;
-            default: n = new Circle(5, d.getPos().getX(), d.getPos().getY(),Color.RED);
+            case STAR:  Circle circ = new Circle(d.getPos().getX(),
+                        d.getPos().getY(), 10, Color.YELLOW);
+                        n = circ;
+                        break;
+            default: n = new Circle(d.getPos().getX(), d.getPos().getY(), 10,
+                       Color.RED);
           }
         return n;
     }
@@ -81,17 +88,22 @@ public class MainViewController
         }  
     }
     
-     
+    
    // Handler for Pane[fx:id="pane"] onMouseClicked
     public void handleMouseClick(MouseEvent event) {
         System.out.println(event.getSceneX()+"/"+event.getSceneY());
-        Rectangle rect = new Rectangle(10,10, Color.RED);
         Ship shp = new Ship( new Point2d(event.getSceneX(), event.getSceneY()), new Vector2d(2,2));
         list.getItems().add(shp);
-        pane.getChildren().add(getNode(shp));
+        actives.add(shp);
+        addNewDrawable(shp);
         System.out.println(pane.getChildrenUnmodifiable().toString());
     }
 
+    
+    private void addNewDrawable(Drawable d){
+        pane.getChildren().add(getNode(d));
+    }
+    
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         assert list != null : "fx:id=\"list\" was not injected: check your FXML file 'MainView.fxml'.";
@@ -126,8 +138,8 @@ public class MainViewController
             }
         });
        
-       
-
+       addNewDrawable( new Star(new Point2d(100,100),20, 50));
+       addNewDrawable( new Star (new Point2d(300,200),60, 70));
        
         
     }

@@ -6,6 +6,7 @@ package space;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import vector.Point2d;
 
@@ -13,10 +14,17 @@ import vector.Point2d;
  *
  * @author sailfish
  */
-public class Star implements Orbitable, Positionable{
+public class Star implements Orbitable, Drawable{
     private final PhysicalBody body = new PhysicalBody();
     private final List<Orbiter> children = new ArrayList<>();
     
+    private static final IconType icon = IconType.STAR;
+    
+    public Star(Point2d position, double mass, double radius){
+        this.body.setPos(position);
+        this.body.setMass(mass);
+        this.body.setRadius(radius);
+    }
     
     @Override
     public Point2d getPos() {
@@ -25,7 +33,7 @@ public class Star implements Orbitable, Positionable{
 
     @Override
     public Collection<Orbiter> getDirectOrbiting() {
-       return children; 
+       return Collections.unmodifiableCollection(children); 
     }
 
     @Override
@@ -46,6 +54,11 @@ public class Star implements Orbitable, Positionable{
     @Override
     public boolean removeOrbiter(Orbiter orb) {
        return children.remove(orb);
+    }
+
+    @Override
+    public IconType getIconType() {
+        return icon;
     }
     
 }
