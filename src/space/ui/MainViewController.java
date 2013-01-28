@@ -3,7 +3,7 @@
  * You can copy and paste this code into your favorite IDE
  **/
 
-package space;
+package space.ui;
 
 import java.net.URL;
 import java.util.IdentityHashMap;
@@ -30,6 +30,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
+import space.Active;
+import space.Drawable;
+import space.Orbitable;
+import space.Planet;
+import space.Ship;
+import space.Star;
 import vector.Point2d;
 import vector.Vector2d;
 
@@ -180,7 +186,7 @@ public class MainViewController
        addDrawable(p3);
        
        Random rand = new Random();
-       for(int i = 0; i < 100000; i ++){
+       for(int i = 0; i < 100; i ++){
            Planet tmp = Planet.newSatelliteOf(s1, rand.nextDouble()*100+52, 
                    rand.nextDouble()*100+10, rand.nextDouble()*2*Math.PI);
            addDrawable(tmp);
