@@ -8,6 +8,7 @@ package space;
 import java.net.URL;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -69,17 +70,26 @@ public class MainViewController
     }
     
     private Node generateNode(Drawable d){
+        final double DEFAULT_RADIUS = 10;
+        final double MIN_RADIUS = 1;
         Node n;
+        double rad = d.getDrawingParameters().containsKey("RADIUS") 
+                     ? d.getDrawingParameters().get("RADIUS") : DEFAULT_RADIUS;
+        rad = Math.max(rad, MIN_RADIUS);
          switch (d.getIconType()){
             case SHIP: Rectangle rect = new Rectangle(10,10, Color.RED);
                        rect.relocate(d.getPos().getX(), d.getPos().getY());
                        n = rect; 
                        break;
             case STAR:  Circle circ = new Circle(d.getPos().getX(),
-                        d.getPos().getY(), 10, Color.YELLOW);
+                        d.getPos().getY(), rad, Color.YELLOW);
                         n = circ;
                         break;
-            default: n = new Circle(d.getPos().getX(), d.getPos().getY(), 5,
+            case PLANET: circ = new Circle(d.getPos().getX(),
+                         d.getPos().getY(), rad, Color.BLUE);
+                         n = circ;
+                         break;
+            default: n = new Circle(d.getPos().getX(), d.getPos().getY(), rad,
                        Color.RED);
           }
         return n;
@@ -168,7 +178,14 @@ public class MainViewController
        
        Planet p3 = Planet.newSatelliteOf(p, 10, 20, 0);
        addDrawable(p3);
-        
+       
+       Random rand = new Random();
+       for(int i = 0; i < 100000; i ++){
+           Planet tmp = Planet.newSatelliteOf(s1, rand.nextDouble()*100+52, 
+                   rand.nextDouble()*100+10, rand.nextDouble()*2*Math.PI);
+           addDrawable(tmp);
+       }
+       
     }
 
     private void updateNode(Drawable d){

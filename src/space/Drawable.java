@@ -4,6 +4,8 @@
  */
 package space;
 
+import com.google.common.collect.ImmutableMap;
+
 /**
  *
  * @author sailfish
@@ -11,6 +13,6 @@ package space;
 public interface Drawable extends Positionable {
     
     public IconType getIconType();
-
+    public ImmutableMap<String, Double> getDrawingParameters(); 
 
 }

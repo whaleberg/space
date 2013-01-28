@@ -4,6 +4,7 @@
  */
 package space;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -71,4 +72,10 @@ public abstract class AbstractOrbitable implements Orbitable {
         return parent;
     }
     
+    @Override
+    public ImmutableMap<String, Double> getDrawingParameters(){
+        ImmutableMap.Builder<String,Double> bld = ImmutableMap.builder();
+        bld.put("RADIUS", this.getRadius());
+        return bld.build();
+    }
 }

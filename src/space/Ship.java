@@ -5,6 +5,7 @@
 package space;
 
 
+import com.google.common.collect.ImmutableMap;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -76,6 +77,11 @@ public class Ship implements Active, Drawable{
     @Override
     public IconType getIconType() {
         return icon;
+    }
+
+    @Override
+    public ImmutableMap<String, Double> getDrawingParameters() {
+       return ImmutableMap.of();
     }
 
 }
