@@ -111,7 +111,6 @@ public class Vector2d implements java.io.Serializable {
         return new Vector2d(this.x + t.x, this.y + t.y);
     }
 
-
   
     /**
      * Sets the value of this tuple to the vector difference of
@@ -139,7 +138,7 @@ public class Vector2d implements java.io.Serializable {
      */
     public final Vector2d scale(double s)
     {
-	return new Vector2d(this.x*s, this.y*y);
+	return new Vector2d(this.x*s, this.y*s);
     }
 
 
