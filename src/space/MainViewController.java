@@ -6,6 +6,8 @@
 package space;
 
 import java.net.URL;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -14,15 +16,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
 import vector.Point2d;
@@ -41,23 +44,51 @@ public class MainViewController
     @FXML
     private Button button;
     
-
+    private final Map<Drawable, Node> drawableMap= new IdentityHashMap<>();
+    
     private final ObservableList<Ship> ships = FXCollections.observableArrayList();
     public void handleButton(ActionEvent event){
      for (Ship s: list.getItems()){
          s.age(10);
+         updateNode(s);
      }
     }
 
-   
+    private Node generateNode(Drawable d){
+        Node n;
+         switch (d.getIconType()){
+            case SHIP: Rectangle rect = new Rectangle(10,10, Color.RED);
+                       rect.relocate(d.getPos().getX(), d.getPos().getY());
+                       n = rect; 
+                       break;
+            default: n = new Circle(5, d.getPos().getX(), d.getPos().getY(),Color.RED);
+          }
+        return n;
+    }
+    
+    
+    
+    private Node getNode(Drawable d){
+        Node n;
+        if (drawableMap.containsKey(d)){
+            n = drawableMap.get(d);
+            updateNode(n, d);
+            return n;
+        } else {
+            n = generateNode(d);
+            drawableMap.put(d, n);
+            return n;
+        }  
+    }
+    
      
    // Handler for Pane[fx:id="pane"] onMouseClicked
     public void handleMouseClick(MouseEvent event) {
         System.out.println(event.getSceneX()+"/"+event.getSceneY());
         Rectangle rect = new Rectangle(10,10, Color.RED);
-        Ship shp = new Ship(rect, new Point2d(event.getSceneX(), event.getSceneY()), new Vector2d(2,2));
+        Ship shp = new Ship( new Point2d(event.getSceneX(), event.getSceneY()), new Vector2d(2,2));
         list.getItems().add(shp);
-        pane.getChildren().add(shp.getNode());
+        pane.getChildren().add(getNode(shp));
         System.out.println(pane.getChildrenUnmodifiable().toString());
     }
 
@@ -76,12 +107,12 @@ public class MainViewController
                 while (c.next()) {
                     ObservableList<? extends Ship> selected = list.getSelectionModel().getSelectedItems();
                     for(Ship s: list.getItems()){
-                        s.getNode().setScaleX(1.0);
-                        s.getNode().setScaleY(1.0);
+                        getNode(s).setScaleX(1.0);
+                        getNode(s).setScaleY(1.0);
                     }
                     for(Ship s: selected){
-                        s.getNode().setScaleX(2.0);
-                        s.getNode().setScaleY(2.0);
+                        getNode(s).setScaleX(2.0);
+                        getNode(s).setScaleY(2.0);
                     }
                 }
             }
@@ -99,6 +130,16 @@ public class MainViewController
 
        
         
+    }
+
+    private void updateNode(Drawable d){
+        if(drawableMap.containsKey(d)){
+            updateNode(drawableMap.get(d),d);
+        }
+    }
+    
+    private void updateNode(Node n, Drawable d) {
+        n.relocate(d.getPos().getX(), d.getPos().getY());
     }
 
     private static class PositionCell extends ListCell<Ship> {

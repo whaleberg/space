@@ -8,7 +8,6 @@ package space;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.Node;
 import vector.Point2d;
 import vector.Vector2d;
 /**
@@ -16,7 +15,7 @@ import vector.Vector2d;
  * @author sailfish
  */
 public class Ship implements Active, Drawable{
-    private Node node;
+
     private Point2d position;
     private Vector2d velocity;
     
@@ -24,17 +23,15 @@ public class Ship implements Active, Drawable{
     
     
     
-    public Ship(Node node, Point2d position, Vector2d velocity){
-        this.node = node;
+    public Ship(Point2d position, Vector2d velocity){
+
         this.position = new Point2d(position);
         this.velocity = new Vector2d(velocity);
         this.relocate(this.position);
        
     }
     
-    public Node getNode(){
-        return node;
-    }
+
     
     public String getPositionAsAString(){
         return position.getX() +"/" + position.getY();
@@ -53,7 +50,6 @@ public class Ship implements Active, Drawable{
     }
     
     public final void relocate(Point2d newPosition){
-        node.relocate(newPosition.getX(),newPosition.getY());
         position = newPosition;
         setPositionString(getPositionAsAString());
     }
