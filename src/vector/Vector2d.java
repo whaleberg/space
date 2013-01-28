@@ -108,7 +108,7 @@ public class Vector2d implements java.io.Serializable {
      */  
     public final Vector2d add(Vector2d t)
     {
-        return new Vector2d(this.x + t.x, this.y + t.x);
+        return new Vector2d(this.x + t.x, this.y + t.y);
     }
 
 
@@ -236,7 +236,7 @@ public class Vector2d implements java.io.Serializable {
     @Override
    public String toString()
    {
-        return("(" + this.x + ", " + this.y + ")");
+        return("(" + this.x + "," + this.y + ")");
    }
 
 
@@ -358,4 +358,5 @@ public class Vector2d implements java.io.Serializable {
    }
    
 
+   
 }

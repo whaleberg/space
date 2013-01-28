@@ -31,6 +31,8 @@
 
 package vector;
 
+import java.beans.VetoableChangeListener;
+
 /**
  * A 2 element point that is represented by double precision floating 
  * point x,y coordinates.
@@ -138,4 +140,8 @@ public class Point2d implements java.io.Serializable {
         return new Point2d( this.vect.add(v));
     }
     
+    @Override
+    public String toString(){
+        return vect.toString();
+    }
 }
