@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -51,7 +52,12 @@ public class MainViewController
     
     public void handleButton(ActionEvent event){
      for (Active a : actives){
-         a.age(10);
+         a.age(1);
+         if(a instanceof Orbitable){
+             for(Orbiter orb: ((Orbitable)a).getDirectOrbiting()){
+                 updateNode(orb);
+             }
+         }
          updateNode(a);
      }
     }
@@ -67,7 +73,7 @@ public class MainViewController
                         d.getPos().getY(), 10, Color.YELLOW);
                         n = circ;
                         break;
-            default: n = new Circle(d.getPos().getX(), d.getPos().getY(), 10,
+            default: n = new Circle(d.getPos().getX(), d.getPos().getY(), 5,
                        Color.RED);
           }
         return n;
@@ -84,6 +90,7 @@ public class MainViewController
         } else {
             n = generateNode(d);
             drawableMap.put(d, n);
+            updateNode(n, d);
             return n;
         }  
     }
@@ -92,16 +99,21 @@ public class MainViewController
    // Handler for Pane[fx:id="pane"] onMouseClicked
     public void handleMouseClick(MouseEvent event) {
         System.out.println(event.getSceneX()+"/"+event.getSceneY());
-        Ship shp = new Ship( new Point2d(event.getSceneX(), event.getSceneY()), new Vector2d(2,2));
+        Ship shp =  new Ship( new Point2d(event.getSceneX(), event.getSceneY()), 
+                    new Vector2d(2,2));
         list.getItems().add(shp);
-        actives.add(shp);
-        addNewDrawable(shp);
+        addActive(shp);
         System.out.println(pane.getChildrenUnmodifiable().toString());
     }
 
     
-    private void addNewDrawable(Drawable d){
+    private void addDrawable(Drawable d){
         pane.getChildren().add(getNode(d));
+    }
+    
+    private void addActive(Active a){
+        actives.add(a);
+        addDrawable(a);
     }
     
     @Override // This method is called by the FXMLLoader when initialization is complete
@@ -138,9 +150,16 @@ public class MainViewController
             }
         });
        
-       addNewDrawable( new Star(new Point2d(100,100),20, 50));
-       addNewDrawable( new Star (new Point2d(300,200),60, 70));
+       Star s1 = new Star( new Point2d(100, 100), 20, 50);
+       Star s2 = new Star( new Point2d(300, 200), 40, 70);
+       addActive( s1);
+       addActive( s2);
        
+       Planet p = Planet.newSatelliteOf(s1, 70, 100, .1);
+       Planet p2 = Planet.newSatelliteOf(s1, 100, 30, 1);
+       addDrawable(p);
+       addDrawable(p2);
+ 
         
     }
 
@@ -151,7 +170,10 @@ public class MainViewController
     }
     
     private void updateNode(Node n, Drawable d) {
-        n.relocate(d.getPos().getX(), d.getPos().getY());
+        Bounds bound = n.getLayoutBounds();
+        double h = bound.getHeight();
+        double w = bound.getWidth();
+        n.relocate(d.getPos().getX()-w/2, d.getPos().getY() - h/2);
     }
 
     private static class PositionCell extends ListCell<Ship> {

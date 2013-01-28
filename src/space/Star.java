@@ -48,6 +48,7 @@ public class Star implements Orbitable, Drawable{
 
     @Override
     public boolean addOrbiter(Orbiter orb) {
+        orb.setParent(this);
         return children.add(orb);
     }
 
@@ -59,6 +60,13 @@ public class Star implements Orbitable, Drawable{
     @Override
     public IconType getIconType() {
         return icon;
+    }
+
+    @Override
+    public void age(long seconds) {
+        for(Orbiter orb: children){
+            orb.age(seconds);
+        }
     }
     
 }

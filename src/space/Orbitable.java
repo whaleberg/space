@@ -5,13 +5,14 @@
 package space;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  *
  * @author sailfish
+ * 
+ * Must override age() to call age on all of it's children.
  */
-public interface Orbitable extends Positionable{
+public interface Orbitable extends Active{
     
     public Collection<Orbiter> getDirectOrbiting();
     public double getMass();

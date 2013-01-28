@@ -10,5 +10,6 @@ package space;
  */
 public interface Orbiter extends Active {
 
+    public void setParent(Orbitable orb);
     
 }

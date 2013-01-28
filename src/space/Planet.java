@@ -11,29 +11,43 @@ import vector.Vector2d;
  *
  * @author sailfish
  */
-public class Planet implements Orbiter, Positionable{
+public class Planet implements Orbiter{
     private PhysicalBody body;
     private double orbitalRadius;
     private double orbitalPeriod;
     private double orbitalAngle;
     private Orbitable parent;
     
-
+    public static Planet newSatelliteOf(Orbitable orb, double orbitalRadius,
+            double orbitalPeriod, double orbitalAngle){
+       Planet p = new Planet(orbitalRadius, orbitalPeriod, orbitalAngle);
+       orb.addOrbiter(p);
+       return p;
+    }
+    
+    public Planet(double orbitalRadius, double orbitalPeriod, double orbitalAngle){
+        this.orbitalRadius = orbitalRadius;
+        this.orbitalPeriod = orbitalPeriod;
+        this.orbitalAngle = orbitalAngle;
+        body = new PhysicalBody();
+    }
    
     private void orbit(long seconds){
-        double changeInAngle = (seconds / orbitalPeriod )*2 * Math.PI;
-        orbitalAngle = changeInAngle + orbitalAngle;
-        if(orbitalAngle > 2*Math.PI){
-            orbitalAngle -= Math.PI;
+        if (parent != null){
+            System.out.print("Orbit:"+body.getPos().toString() + " -> ");
+            double changeInAngle = (seconds / orbitalPeriod )*2*Math.PI;
+            orbitalAngle += changeInAngle;
+            while(orbitalAngle > 2*Math.PI){
+                orbitalAngle -= 2*Math.PI;
+            }
+            Vector2d displace = getAngleVector(orbitalAngle).scale(orbitalRadius);
+            this.body.setPos(parent.getPos().translate(displace));
+            System.out.println(body.getPos().toString());
         }
-        Vector2d displace = new Vector2d(Math.sin(orbitalAngle), Math.cos(orbitalAngle))
-                .scale(orbitalRadius);
-        this.body.setPos(parent.getPos().translate(displace));
-        
     }
     
     private static Vector2d getAngleVector(double angle){
-        return new Vector2d(Math.sin(angle), Math.cos(angle));
+        return new Vector2d(Math.cos(angle), Math.sin(angle));
     }
     
     @Override
@@ -43,7 +57,18 @@ public class Planet implements Orbiter, Positionable{
 
     @Override
     public Point2d getPos() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return body.getPos();
+    }
+
+    @Override
+    public IconType getIconType() {
+       return IconType.PLANET;
+    }
+
+    @Override
+    public void setParent(Orbitable orb) {
+        parent = orb;
+        orbit(0);
     }
 
     
