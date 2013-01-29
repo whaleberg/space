@@ -4,21 +4,54 @@
  */
 package space;
 
+import java.util.Objects;
+import javafx.geometry.Point2D;
+import javafx.scene.transform.Affine;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.ScaleBuilder;
+import javafx.scene.transform.Transform;
+import javafx.scene.transform.TranslateBuilder;
 import vector.Point2d;
-
 /**
  *
  * @author sailfish
  */
 public final class Rect {
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.topLeft);
+        hash = 67 * hash + (int) (Double.doubleToLongBits(this.height) ^ (Double.doubleToLongBits(this.height) >>> 32));
+        hash = 67 * hash + (int) (Double.doubleToLongBits(this.width) ^ (Double.doubleToLongBits(this.width) >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Rect other = (Rect) obj;
+        if (!Objects.equals(this.topLeft, other.topLeft)) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.width) != Double.doubleToLongBits(other.width)) {
+            return false;
+        }
+        return true;
+    }
     
-    private final Point2d topLeft;
-    private final double height;
-    private final double width;
-    public Rect(Point2d topLeft, double h, double w){
+    public final Point2d topLeft;
+    public final double height;
+    public final double width;
+    public Rect(Point2d topLeft, double height, double width){
         this.topLeft = new Point2d(topLeft);
-        this.height = h;
-        this.width = w;
+        this.height = height;
+        this.width = width;
     }
     
     public Rect(Point2d p1, Point2d p2){
@@ -33,5 +66,9 @@ public final class Rect {
             && (p.getY() >= topLeft.getY() && p.getY() <= topLeft.getY() + height);
     }
 
+    public boolean matchesAspectRatio(Rect r){
+        return height / width == r.height / r.width;
+    }
+    
 
 }

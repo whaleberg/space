@@ -5,8 +5,12 @@
 package space;
 
 
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
 import vector.Point2d;
 
 
@@ -16,23 +20,28 @@ import vector.Point2d;
  */
 public class StarMap {
     
-   private List<Positionable> map;
+   private List<Drawable> map;
+  // private Multimap<Rect , ObservableSet<Drawable>> watchers;
    
    public StarMap(){
        map = new ArrayList<>();
    }
    
-   public void add(Positionable p){
+   public void add(Drawable p){
        map.add(p);
    }
    
-   public void remove(Positionable p){
+   public void remove(Drawable p){
        map.remove(p);
    }
    
-   public List<Positionable> getWithinBounds(Rect r){
-      List<Positionable> contained = new ArrayList<>();
-      for (Positionable p : map){
+   public ObservableSet<Drawable> watch(Rect r){
+       return getWithinBounds(r);
+   }
+      
+   private ObservableSet<Drawable> getWithinBounds(Rect r){
+      ObservableSet<Drawable> contained = FXCollections.observableSet();
+      for (Drawable p : map){
           if(r.contains(p.getPos())){
               contained.add(p);
           }
@@ -60,4 +69,5 @@ public class StarMap {
        return new Rect(lt, rb);
    }
 
+  
 }
