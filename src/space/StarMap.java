@@ -22,6 +22,10 @@ public class StarMap {
     
    private List<Drawable> map;
   // private Multimap<Rect , ObservableSet<Drawable>> watchers;
+
+    public List<Drawable> getMap() {
+        return map;
+    }
    
    public StarMap(){
        map = new ArrayList<>();

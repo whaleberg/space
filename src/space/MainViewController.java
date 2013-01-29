@@ -30,19 +30,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
-import space.Active;
-import space.Drawable;
-import space.Orbitable;
-import space.Planet;
-import space.Ship;
-import space.Star;
 import vector.Point2d;
 import vector.Vector2d;
 
 
 public class MainViewController
     implements Initializable {
-
+    
+    private final GameData data = GameData.getInstance();
+    private final GameController controller = GameController.getInstance();
+    
+    
     @FXML //  fx:id="list"
     private ListView<Ship> list; // Value injected by FXMLLoader
   
@@ -55,24 +53,37 @@ public class MainViewController
     private final Map<Drawable, Node> drawableMap= new IdentityHashMap<>();
     
 
-    private final ObservableList<Active> actives = FXCollections.observableArrayList();
+   // private final ObservableList<Active> actives = FXCollections.observableArrayList();
     
     public void handleButton(ActionEvent event){
-     for (Active a : actives){
-         a.age(1);
-         if(a instanceof Orbitable){
-             updateTreeOfOrbitables((Orbitable)a);
-         } else {
-             updateNode(a);
-         }
-     }
+        GameController.getInstance().age(1);
+        update();
     }
 
     private void updateTreeOfOrbitables(Orbitable orb){
-        updateNode(orb);
+        getNode(orb);
         for(Orbitable o : orb.getDirectOrbiting()){
             updateTreeOfOrbitables(o);
         }
+    }
+    
+    
+    public void update(){
+ 
+        ObservableList<Node> nodes = FXCollections.observableArrayList();
+        for( Drawable d: data.getDrawable()){
+            nodes.add(getNode(d));
+        }
+     
+        for (Active a : GameData.getInstance().getActive()){
+            a.age(1);
+            if(a instanceof Orbitable){
+                updateTreeOfOrbitables((Orbitable)a);
+            } else {
+                getNode(a);
+            }
+        }
+        pane.getChildren().setAll(nodes);
     }
     
     private Node generateNode(Drawable d){
@@ -124,19 +135,21 @@ public class MainViewController
         Ship shp =  new Ship( new Point2d(event.getSceneX(), event.getSceneY()), 
                     new Vector2d(2,2));
         list.getItems().add(shp);
-        addActive(shp);
-        System.out.println(pane.getChildrenUnmodifiable().toString());
+        GameController.getInstance().addActive(shp);
+        addDrawable(shp);
+       
     }
 
     
     private void addDrawable(Drawable d){
         pane.getChildren().add(getNode(d));
+        System.out.println(pane.getChildrenUnmodifiable().toString());
     }
     
-    private void addActive(Active a){
-        actives.add(a);
-        addDrawable(a);
-    }
+//    private void addActive(Active a){
+//        actives.add(a);
+//        addDrawable(a);
+//    }
     
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -172,33 +185,30 @@ public class MainViewController
             }
         });
        
+      
        Star s1 = new Star( new Point2d(100, 100), 20, 50);
-       Star s2 = new Star( new Point2d(300, 200), 40, 70);
-       addActive( s1);
-       addActive( s2);
+       //Star s2 = new Star( new Point2d(300, 200), 40, 70);
+       controller.addActive(s1);
+       //addActive( s2);
        
        Planet p = Planet.newSatelliteOf(s1, 70, 100, .1);
       // Planet p2 = Planet.newSatelliteOf(s1, 100, 30, 1);
-       addDrawable(p);
+      controller.addActive(p);
       // addDrawable(p2);
        
        Planet p3 = Planet.newSatelliteOf(p, 10, 20, 0);
-       addDrawable(p3);
+       controller.addDrawable(p3);
        
        Random rand = new Random();
-       for(int i = 0; i < 100; i ++){
+       for(int i = 0; i < 2; i ++){
            Planet tmp = Planet.newSatelliteOf(s1, rand.nextDouble()*100+52, 
                    rand.nextDouble()*100+10, rand.nextDouble()*2*Math.PI);
-           addDrawable(tmp);
+           controller.addActive(tmp);
        }
+       update();
        
     }
 
-    private void updateNode(Drawable d){
-        if(drawableMap.containsKey(d)){
-            updateNode(drawableMap.get(d),d);
-        }
-    }
     
     private void updateNode(Node n, Drawable d) {
         Bounds bound = n.getLayoutBounds();
