@@ -31,7 +31,7 @@
 
 package vector;
 
-import java.beans.VetoableChangeListener;
+import java.util.Objects;
 
 /**
  * A 2 element point that is represented by double precision floating 
@@ -43,6 +43,28 @@ public class Point2d implements java.io.Serializable {
     // Compatible with 1.1
     static final long serialVersionUID = 1133748791492571954L;
     private final Vector2d vect;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.vect);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Point2d other = (Point2d) obj;
+        if (!Objects.equals(this.vect, other.vect)) {
+            return false;
+        }
+        return true;
+    }
     /**
      * Constructs and initializes a Point2d from the specified xy coordinates.
      * @param x the x coordinate
