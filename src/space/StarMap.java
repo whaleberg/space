@@ -5,6 +5,7 @@
 package space;
 
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,8 @@ public class StarMap {
    private List<Drawable> map;
   // private Multimap<Rect , ObservableSet<Drawable>> watchers;
 
-    public List<Drawable> getMap() {
-        return map;
+    public ImmutableList<Drawable> getMap() {
+        return ImmutableList.copyOf(map);
     }
    
    public StarMap(){
@@ -63,7 +64,7 @@ public class StarMap {
            Point2d pos = p.getPos();
            
            l = Math.min(l, pos.getX());
-           r = Math.max(r,pos.getX());
+           r = Math.max(r, pos.getX());
            t = Math.min(t, pos.getY());
            b = Math.max(b, pos.getY());
        }
