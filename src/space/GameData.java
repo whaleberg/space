@@ -31,6 +31,10 @@ public class GameData {
         addDrawable(a);
     }
     
+    public StarMap getStars(){
+        return stars;
+    }
+    
     public ImmutableList<Drawable> getDrawable(){
         return ImmutableList.copyOf(stars.getMap());
     }

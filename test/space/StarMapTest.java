@@ -4,7 +4,6 @@
  */
 package space;
 
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import org.junit.After;

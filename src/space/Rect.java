@@ -5,12 +5,6 @@
 package space;
 
 import java.util.Objects;
-import javafx.geometry.Point2D;
-import javafx.scene.transform.Affine;
-import javafx.scene.transform.Scale;
-import javafx.scene.transform.ScaleBuilder;
-import javafx.scene.transform.Transform;
-import javafx.scene.transform.TranslateBuilder;
 import vector.Point2d;
 /**
  *
@@ -25,6 +19,11 @@ public final class Rect {
         hash = 67 * hash + (int) (Double.doubleToLongBits(this.height) ^ (Double.doubleToLongBits(this.height) >>> 32));
         hash = 67 * hash + (int) (Double.doubleToLongBits(this.width) ^ (Double.doubleToLongBits(this.width) >>> 32));
         return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "Rect{" + topLeft + ", h" + height + ", w=" + width + '}';
     }
 
     @Override
@@ -74,14 +73,21 @@ public final class Rect {
         return Math.abs(width / height);
     }
     
-    public Rect expandToAspectRatio(Rect r){
-        if(matchesAspectRatio(r)){
+    public Rect expandToAspectRatio(Rect r) {
+        assert (r != null);
+       
+        if (r.aspectRatio() == this.aspectRatio()) {
             return r;
-        } else if(r.aspectRatio() < this.aspectRatio()){
-            return new Rect(this.topLeft, this.height, this.width / r.aspectRatio() );
-        } else if(r.aspectRatio() > this.aspectRatio()){
-            return new Rect(this.topLeft, this.height/ r.aspectRatio(), this.width);
+        } else if (r.aspectRatio() < this.aspectRatio()) {
+            return new Rect(this.topLeft, this.height, this.width / r.aspectRatio());
+        } else if (r.aspectRatio() > this.aspectRatio()) {
+            return new Rect(this.topLeft, this.height / r.aspectRatio(), this.width);
         }
         throw new AssertionError("Something is wrong if it got here...");
+        
+    }
+    
+    public boolean hasZeroArea(){
+        return height == 0 || width == 0;
     }
 }

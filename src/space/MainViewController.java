@@ -83,7 +83,7 @@ public class MainViewController
                 getNode(a);
             }
         }
-        pane.getChildren().setAll(nodes);
+       // pane.getChildren().setAll(nodes);
     }
     
     private Node generateNode(Drawable d){
@@ -177,6 +177,8 @@ public class MainViewController
             }
        });
        
+             
+ 
        list.setCellFactory(new Callback<ListView<Ship>, ListCell<Ship>>() {
 
             @Override
@@ -207,6 +209,7 @@ public class MainViewController
        }
        update();
        
+       addViewer();
     }
 
     
@@ -217,6 +220,21 @@ public class MainViewController
         n.relocate(d.getPos().getX()-w/2, d.getPos().getY() - h/2);
     }
 
+    public void addViewer(){
+         View overallView = new View(controller.getWorldBounds(), 
+                        new Rect(new Point2d(),pane.getPrefHeight(), pane.getPrefWidth()),
+                                controller.getMap());
+
+        
+       ViewPane viewer = new ViewPane(overallView);
+       viewer.setVisible(true);
+       Rectangle rect = new Rectangle(pane.getHeight(),pane.getWidth(),Color.ALICEBLUE);
+       System.out.println(pane.getHeight()+" "+ pane.getBoundsInLocal().getHeight()+" "+pane.getLayoutBounds().getHeight());
+       pane.getChildren().add(viewer);
+    
+       viewer.relocate(0, 0);
+    }
+    
     private static class PositionCell extends ListCell<Ship> {
         
         @Override

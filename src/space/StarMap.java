@@ -6,10 +6,8 @@ package space;
 
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import vector.Point2d;
