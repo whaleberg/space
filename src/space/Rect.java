@@ -78,9 +78,9 @@ public final class Rect {
        
         if (r.aspectRatio() == this.aspectRatio()) {
             return this;
-        } else if (r.aspectRatio() < this.aspectRatio()) {
-            return new Rect(this.topLeft, this.height, this.width / r.aspectRatio());
-        } else if (r.aspectRatio() > this.aspectRatio()) {
+        } else if (this.aspectRatio() < r.aspectRatio() ) {
+            return new Rect(this.topLeft, this.height, this.width * r.aspectRatio());
+        } else if (this.aspectRatio() > r.aspectRatio()) {
             return new Rect(this.topLeft, this.height / r.aspectRatio(), this.width);
         }
         throw new AssertionError("Something is wrong if it got here...");
