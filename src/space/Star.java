@@ -29,5 +29,8 @@ public class Star extends AbstractOrbitable{
         return icon;
     }
 
-    
+    @Override
+    public String getID(){
+        return "Star:"+super.getID();
+    }
 }

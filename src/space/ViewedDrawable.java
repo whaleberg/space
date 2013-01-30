@@ -45,4 +45,8 @@ public class ViewedDrawable implements Drawable{
         return v.view(d.getPos());
     }
     
+    @Override
+    public String getID(){
+        return d.getID();
+    }
 }

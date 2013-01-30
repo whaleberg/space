@@ -64,7 +64,10 @@ public class Planet extends AbstractOrbitable {
         orbit(0);
     }
 
- 
+    @Override
+    public String getID(){
+        return "Planet:"+super.getID();
+    }
     
     
 }

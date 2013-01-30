@@ -14,5 +14,5 @@ public interface Drawable extends Positionable {
     
     public IconType getIconType();
     public ImmutableMap<String, Double> getDrawingParameters(); 
-
+    public String getID();
 }

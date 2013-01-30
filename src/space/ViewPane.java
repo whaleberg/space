@@ -4,6 +4,7 @@
  */
 package space;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class ViewPane extends Pane {
     final Circle br = new Circle(this.getWidth()-10, this.getHeight()-10,50);
     final Circle mid = new Circle(this.getWidth()/2, this.getHeight()/2, 10);
     private View view;
-    final Map<Drawable, Node> drawableMap = new IdentityHashMap<>();
+    final Map<String, Node> drawableMap = new HashMap<>();
     final Label lbl;
     final Set<Node> overlay = new HashSet<>();
     public ViewPane(View view) {
@@ -96,13 +97,13 @@ public class ViewPane extends Pane {
 
     public Node getNode(Drawable d) {
         Node n;
-        if (drawableMap.containsKey(d)) {
-            n = drawableMap.get(d);
+        if (drawableMap.containsKey(d.getID())) {
+            n = drawableMap.get(d.getID());
             updateNode(n, d);
             return n;
         } else {
             n = generateNode(d);
-            drawableMap.put(d, n);
+            drawableMap.put(d.getID(), n);
             updateNode(n, d);
             return n;
         }

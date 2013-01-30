@@ -20,6 +20,8 @@ public class Ship implements Active, Drawable{
     private Point2d position;
     private Vector2d velocity;
     
+    private final String ID;
+    
     public static final IconType icon = IconType.SHIP;
     
     
@@ -29,7 +31,7 @@ public class Ship implements Active, Drawable{
         this.position = new Point2d(position);
         this.velocity = new Vector2d(velocity);
         this.relocate(this.position);
-       
+        this.ID = "Ship:"+StaticUtility.createID();
     }
     
 
@@ -66,7 +68,10 @@ public class Ship implements Active, Drawable{
     
     
 
-    
+       @Override
+    public String getID(){
+        return ID;
+    }
 
 
     private StringProperty positionString = new SimpleStringProperty();
