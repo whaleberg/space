@@ -78,4 +78,18 @@ public class RectTest {
         assertEquals(expResult, result);
 
     }
+
+    /**
+     * Test of expandToAspectRatio method, of class Rect.
+     */
+    @Test
+    public void testExpandToAspectRatio() {
+        System.out.println("expandToAspectRatio");
+        Rect r = new Rect( new Point2d(), new Point2d(10,10));
+        Rect instance = new Rect(new Point2d(), new Point2d(100,500));
+        Rect expResult = new Rect(new Point2d(),new Point2d(500,500));
+        Rect result = instance.expandToAspectRatio(r);
+        assertEquals(expResult, result);
+
+    }
 }

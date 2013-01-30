@@ -67,8 +67,21 @@ public final class Rect {
     }
 
     public boolean matchesAspectRatio(Rect r){
-        return height / width == r.height / r.width;
+        return aspectRatio() == r.aspectRatio();
     }
     
-
+    public double aspectRatio(){
+        return Math.abs(width / height);
+    }
+    
+    public Rect expandToAspectRatio(Rect r){
+        if(matchesAspectRatio(r)){
+            return r;
+        } else if(r.aspectRatio() < this.aspectRatio()){
+            return new Rect(this.topLeft, this.height, this.width / r.aspectRatio() );
+        } else if(r.aspectRatio() > this.aspectRatio()){
+            return new Rect(this.topLeft, this.height/ r.aspectRatio(), this.width);
+        }
+        throw new AssertionError("Something is wrong if it got here...");
+    }
 }
