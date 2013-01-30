@@ -6,19 +6,14 @@
 package space;
 
 import java.net.URL;
-import java.util.IdentityHashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -27,7 +22,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
 import vector.Point2d;
@@ -49,83 +43,13 @@ public class MainViewController
 
     @FXML
     private Button button;
-    
-    private final Map<Drawable, Node> drawableMap= new IdentityHashMap<>();
-    
+    private ViewPane viewer;
 
    // private final ObservableList<Active> actives = FXCollections.observableArrayList();
     
     public void handleButton(ActionEvent event){
         GameController.getInstance().age(1);
-        update();
-    }
-
-    private void updateTreeOfOrbitables(Orbitable orb){
-        getNode(orb);
-        for(Orbitable o : orb.getDirectOrbiting()){
-            updateTreeOfOrbitables(o);
-        }
-    }
-    
-    
-    public void update(){
- 
-        ObservableList<Node> nodes = FXCollections.observableArrayList();
-        for( Drawable d: data.getDrawable()){
-            nodes.add(getNode(d));
-        }
-     
-        for (Active a : GameData.getInstance().getActive()){
-            a.age(1);
-            if(a instanceof Orbitable){
-                updateTreeOfOrbitables((Orbitable)a);
-            } else {
-                getNode(a);
-            }
-        }
-       // pane.getChildren().setAll(nodes);
-    }
-    
-    private Node generateNode(Drawable d){
-        final double DEFAULT_RADIUS = 10;
-        final double MIN_RADIUS = 1;
-        Node n;
-        double rad = d.getDrawingParameters().containsKey("RADIUS") 
-                     ? d.getDrawingParameters().get("RADIUS") : DEFAULT_RADIUS;
-        rad = Math.max(rad, MIN_RADIUS);
-         switch (d.getIconType()){
-            case SHIP: Rectangle rect = new Rectangle(10,10, Color.RED);
-                       rect.relocate(d.getPos().getX(), d.getPos().getY());
-                       n = rect; 
-                       break;
-            case STAR:  Circle circ = new Circle(d.getPos().getX(),
-                        d.getPos().getY(), rad, Color.YELLOW);
-                        n = circ;
-                        break;
-            case PLANET: circ = new Circle(d.getPos().getX(),
-                         d.getPos().getY(), rad, Color.BLUE);
-                         n = circ;
-                         break;
-            default: n = new Circle(d.getPos().getX(), d.getPos().getY(), rad,
-                       Color.RED);
-          }
-        return n;
-    }
-    
-    
-    
-    private Node getNode(Drawable d){
-        Node n;
-        if (drawableMap.containsKey(d)){
-            n = drawableMap.get(d);
-            updateNode(n, d);
-            return n;
-        } else {
-            n = generateNode(d);
-            drawableMap.put(d, n);
-            updateNode(n, d);
-            return n;
-        }  
+        viewer.update();
     }
     
     
@@ -136,14 +60,8 @@ public class MainViewController
                     new Vector2d(2,2));
         list.getItems().add(shp);
         GameController.getInstance().addActive(shp);
-        addDrawable(shp);
+        controller.addDrawable(shp);
        
-    }
-
-    
-    private void addDrawable(Drawable d){
-        pane.getChildren().add(getNode(d));
-        System.out.println(pane.getChildrenUnmodifiable().toString());
     }
     
 //    private void addActive(Active a){
@@ -166,12 +84,12 @@ public class MainViewController
                 while (c.next()) {
                     ObservableList<? extends Ship> selected = list.getSelectionModel().getSelectedItems();
                     for(Ship s: list.getItems()){
-                        getNode(s).setScaleX(1.0);
-                        getNode(s).setScaleY(1.0);
+                        viewer.getNode(s).setScaleX(1.0);
+                        viewer.getNode(s).setScaleY(1.0);
                     }
                     for(Ship s: selected){
-                        getNode(s).setScaleX(2.0);
-                        getNode(s).setScaleY(2.0);
+                        viewer.getNode(s).setScaleX(2.0);
+                        viewer.getNode(s).setScaleY(2.0);
                     }
                 }
             }
@@ -207,17 +125,10 @@ public class MainViewController
                    rand.nextDouble()*100+10, rand.nextDouble()*2*Math.PI);
            controller.addActive(tmp);
        }
-       update();
+        
        
        addViewer();
-    }
-
-    
-    private void updateNode(Node n, Drawable d) {
-        Bounds bound = n.getLayoutBounds();
-        double h = bound.getHeight();
-        double w = bound.getWidth();
-        n.relocate(d.getPos().getX()-w/2, d.getPos().getY() - h/2);
+       viewer.update();
     }
 
     public void addViewer(){
@@ -226,10 +137,9 @@ public class MainViewController
                                 controller.getMap());
 
         
-       ViewPane viewer = new ViewPane(overallView);
+
+       viewer = new ViewPane(overallView);
        viewer.setVisible(true);
-       Rectangle rect = new Rectangle(pane.getHeight(),pane.getWidth(),Color.ALICEBLUE);
-       System.out.println(pane.getHeight()+" "+ pane.getBoundsInLocal().getHeight()+" "+pane.getLayoutBounds().getHeight());
        pane.getChildren().add(viewer);
     
        viewer.relocate(0, 0);
