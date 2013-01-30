@@ -1,18 +1,15 @@
-/**
- * Sample Skeleton for "MainView.fxml" Controller Class
- * You can copy and paste this code into your favorite IDE
- **/
-
 package space;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -33,7 +30,7 @@ public class MainViewController
     
     
     @FXML //  fx:id="list"
-    private ListView<Ship> list; // Value injected by FXMLLoader
+    private ListView<Drawable> list; // Value injected by FXMLLoader
   
     @FXML //  fx:id="pane"
     private AnchorPane pane; // Value injected by FXMLLoader
@@ -62,8 +59,7 @@ public class MainViewController
         Ship shp =  new Ship( new Point2d(event.getSceneX(), event.getSceneY()), 
                     new Vector2d(2,2));
         list.getItems().add(shp);
-        GameController.getInstance().addActive(shp);
-        controller.addDrawable(shp);
+        controller.addActive(shp);
         viewer.update();
        
     }
@@ -79,21 +75,27 @@ public class MainViewController
         assert pane != null : "fx:id=\"pane\" was not injected: check your FXML file 'MainView.fxml'.";
         
         // initialize your logic here: all @FXML variables will have been injecte
-        //list.setItems(pane.getChildren());
+    
        list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-       list.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Ship>() {
+       list.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Drawable>() {
 
             @Override
-            public void onChanged(Change<? extends Ship> c) {
+            public void onChanged(Change<? extends Drawable> c) {
                 while (c.next()) {
-                    ObservableList<? extends Ship> selected = list.getSelectionModel().getSelectedItems();
-                    for(Ship s: list.getItems()){
-                        viewer.getNode(s).setScaleX(1.0);
-                        viewer.getNode(s).setScaleY(1.0);
+                    ObservableList<? extends Drawable> selected = list.getSelectionModel().getSelectedItems();
+                    for (Drawable s : list.getItems()) {
+                        final Node lookUpNode = viewer.lookUpNode(s);
+                        if (lookUpNode != null) {
+                            lookUpNode.setScaleX(1.0);
+                            lookUpNode.setScaleY(1.0);
+                        }
                     }
-                    for(Ship s: selected){
-                        viewer.getNode(s).setScaleX(2.0);
-                        viewer.getNode(s).setScaleY(2.0);
+                    for (Drawable s : selected) {
+                        final Node lookUpNode = viewer.lookUpNode(s);
+                        if (lookUpNode != null) {
+                            lookUpNode.setScaleX(2.0);
+                            lookUpNode.setScaleY(2.0);
+                        }
                     }
                 }
             }
@@ -101,10 +103,10 @@ public class MainViewController
        
              
  
-       list.setCellFactory(new Callback<ListView<Ship>, ListCell<Ship>>() {
+       list.setCellFactory(new Callback<ListView<Drawable>, ListCell<Drawable>>() {
 
             @Override
-            public ListCell<Ship> call(ListView<Ship> p) {
+            public ListCell<Drawable> call(ListView<Drawable> p) {
                return new PositionCell();
             }
         });
@@ -145,6 +147,7 @@ public class MainViewController
        
        addViewer();
        viewer.update();
+       list.getItems().addAll(data.getDrawable());
     }
 
     public void addViewer(){
@@ -164,14 +167,14 @@ public class MainViewController
        viewer.relocate(0, 0);
     }
     
-    private static class PositionCell extends ListCell<Ship> {
+    private static class PositionCell extends ListCell<Drawable> {
         
         @Override
-        public void updateItem(Ship item, boolean empty){
+        public void updateItem(Drawable item, boolean empty){
             super.updateItem(item, empty);
             Label lbl = new Label();
             if(item != null){
-                lbl.textProperty().bind(item.positionStringProperty());
+                lbl.textProperty().set(item.getID());
                 setGraphic(lbl);
             }
         }

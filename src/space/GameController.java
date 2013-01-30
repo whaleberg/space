@@ -4,12 +4,19 @@
  */
 package space;
 
+import com.google.common.collect.Sets;
+import java.util.Set;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
+
 /**
  *
  * @author sailfish
  */
 public class GameController {
     private static final GameData data = GameData.getInstance();
+    private ObservableSet<Drawable> selected = FXCollections.observableSet();
+    
     
     private GameController() {
     }
@@ -48,5 +55,14 @@ public class GameController {
     private static class GameControllerHolder {
 
         private static final GameController INSTANCE = new GameController();
+    }
+    
+    private void setSelected(Set<Drawable> newSelection){
+        selected.clear();
+        selected.addAll(newSelection);
+    }
+    
+    private ObservableSet<Drawable> getSelected(){
+        return selected;
     }
 }
