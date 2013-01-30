@@ -4,8 +4,10 @@
  */
 package space;
 
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Set;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -24,16 +26,30 @@ import vector.Point2d;
  * @author sailfish
  */
 public class ViewPane extends Pane {
-    
+    final Circle tl = new Circle(0,0,50);
+    final Circle tr = new Circle(this.getWidth()-1,0,50);
+    final  Circle bl = new Circle(0, this.getHeight()-10, 50);
+    final Circle br = new Circle(this.getWidth()-10, this.getHeight()-10,50);
+    final Circle mid = new Circle(this.getWidth()/2, this.getHeight()/2, 10);
     private View view;
     final Map<Drawable, Node> drawableMap = new IdentityHashMap<>();
     final Label lbl;
-    
+    final Set<Node> overlay = new HashSet<>();
     public ViewPane(View view) {
         super();
         this.view = view;
         
-                lbl = new Label(view.toString());
+        lbl = new Label(this.view.toString());
+        overlay.add(lbl);
+      
+       
+        overlay.add(tl);
+        overlay.add(tr);
+        overlay.add(br);
+        overlay.add(bl);
+      
+        overlay.add(mid);
+        
         this.getChildren().add(lbl);
         lbl.relocate(10, 10);
         this.widthProperty().addListener(new ChangeListener<Number>() {
@@ -44,8 +60,12 @@ public class ViewPane extends Pane {
                             ViewPane.this.getHeight(),
                             ViewPane.this.getWidth()));
                             ViewPane.this.update();
+                            tr.setCenterX((double)t1);
+                            br.setCenterX((double)t1);
+                            mid.setCenterX((double)t1/2);
                             lbl.setText(ViewPane.this.view.toString());
-
+                            System.out.println("Width"+t1);
+                            
                 }
             }
         });
@@ -58,7 +78,11 @@ public class ViewPane extends Pane {
                             ViewPane.this.getHeight(),
                             ViewPane.this.getWidth()));
                             ViewPane.this.update();
+                            bl.setCenterY((double)t1);
+                            br.setCenterY((double)t1);
+                            mid.setCenterY((double)t1/2);
                             lbl.setText(ViewPane.this.view.toString());
+                            System.out.println("Height:"+t1);
 
                 }
             }
@@ -67,6 +91,7 @@ public class ViewPane extends Pane {
     
     public void setView(View view){
         this.view = view;
+        update();
     }
 
     public Node getNode(Drawable d) {
@@ -83,12 +108,7 @@ public class ViewPane extends Pane {
         }
     }
 
-    private void updateTreeOfOrbitables(Orbitable orb) {
-        getNode(orb);
-        for (Orbitable o : orb.getDirectOrbiting()) {
-            updateTreeOfOrbitables(o);
-        }
-    }
+
 
     private void updateNode(Node n, Drawable d) {
         Bounds bound = n.getLayoutBounds();
@@ -103,8 +123,8 @@ public class ViewPane extends Pane {
     }
 
     private Node generateNode(Drawable d) {
-        final double DEFAULT_RADIUS = 10;
-        final double MIN_RADIUS = 1;
+        final double DEFAULT_RADIUS = 100;
+        final double MIN_RADIUS = 100;
         Node n;
         double rad = d.getDrawingParameters().containsKey("RADIUS") ? d.getDrawingParameters().get("RADIUS") : DEFAULT_RADIUS;
         rad = Math.max(rad, MIN_RADIUS);
@@ -130,19 +150,13 @@ public class ViewPane extends Pane {
 
     public void update() {
         ObservableList<Node> nodes = FXCollections.observableArrayList();
-        for (Drawable d : GameData.getInstance().getDrawable()) {
+        for (Drawable d : view.getViewed()) {
             nodes.add(getNode(d));
         }
-        for (Active a : GameData.getInstance().getActive()) {
-            a.age(1);
-            if (a instanceof Orbitable) {
-                updateTreeOfOrbitables((Orbitable) a);
-            } else {
-                getNode(a);
-            }
-        }
+   
         this.getChildren().setAll(nodes);
-        this.getChildren().add(lbl);
+        this.getChildren().addAll(overlay);
+        System.out.println(this.getChildren().toString());
     }
    
     

@@ -18,7 +18,7 @@ public class View {
    private final StarMap map;
    private final ObservableSet<Drawable> viewed;
    
-   private double scaleX; // scaleY;
+   private double scale; 
    private double translateX, translateY;
     private Rect idealViewingRect;
       
@@ -31,33 +31,30 @@ public class View {
        this.viewingRect = viewingRect.expandToAspectRatio(outputRect);
        this.outputRect = outputRect;
        this.map = map;
-       
-       scaleX = this.outputRect.width / this.viewingRect.width;
-      // scaleY = outputRect.height/ viewingRect.height;
-       translateX = this.outputRect.topLeft.getX() - this.viewingRect.topLeft.getX(); 
-       translateY = this.outputRect.topLeft.getY() - this.viewingRect.topLeft.getY();
+       setScale();
        
        viewed = this.map.watch(viewingRect);
    }
     
    public double view(double length){
-       return length * scaleX;
+       return length * scale;
    }
    public double project(double length){
-       return length / scaleX;
+       return length / scale;
    }
    
    public void updateOutputRect(Rect r){
        this.outputRect = r;
        viewingRect = idealViewingRect.expandToAspectRatio(outputRect);
+       setScale();
    }
    
    public Point2d view( Point2d p){
-       return new Point2d( view(p.getX() + translateX), view(p.getY()-translateY) );
+       return new Point2d( view(p.getX() + translateX), view(p.getY()+translateY) );
    }
    
    public Point2d project(Point2d p){
-       return new Point2d( project(p.getX())-translateX, project(p.getY())+translateY);
+       return new Point2d( project(p.getX())+translateX, project(p.getY())+translateY);
    }
    
    public ObservableSet<Drawable> getViewed(){
@@ -73,6 +70,12 @@ public class View {
     @Override
     public String toString() {
         return "View{" + "viewingRect=" + viewingRect + ", outputRect=" + outputRect + '}';
+    }
+
+    private void setScale() {
+        scale = outputRect.width / viewingRect.width;
+        translateX = outputRect.topLeft.getX() - viewingRect.topLeft.getX(); 
+        translateY = outputRect.topLeft.getY() - viewingRect.topLeft.getY();
     }
    
 

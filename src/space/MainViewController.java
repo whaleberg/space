@@ -6,7 +6,6 @@
 package space;
 
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
@@ -20,9 +19,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import vector.Point2d;
 import vector.Vector2d;
@@ -39,7 +36,7 @@ public class MainViewController
     private ListView<Ship> list; // Value injected by FXMLLoader
   
     @FXML //  fx:id="pane"
-    private Pane pane; // Value injected by FXMLLoader
+    private AnchorPane pane; // Value injected by FXMLLoader
 
     @FXML
     private Button button;
@@ -49,7 +46,13 @@ public class MainViewController
     
     public void handleButton(ActionEvent event){
         GameController.getInstance().age(1);
-        viewer.update();
+        
+            View overallView = new View(controller.getWorldBounds(), 
+                        new Rect(new Point2d(),pane.getHeight(), pane.getWidth()),
+                                controller.getMap());
+            viewer.update();
+      //  viewer.setView(overallView);
+        
     }
     
     
@@ -61,6 +64,7 @@ public class MainViewController
         list.getItems().add(shp);
         GameController.getInstance().addActive(shp);
         controller.addDrawable(shp);
+        viewer.update();
        
     }
     
@@ -106,26 +110,38 @@ public class MainViewController
         });
        
       
-       Star s1 = new Star( new Point2d(100, 100), 20, 50);
-       //Star s2 = new Star( new Point2d(300, 200), 40, 70);
+//       Star s1 = new Star( new Point2d(100, 100), 20, 50);
+//       //Star s2 = new Star( new Point2d(300, 200), 40, 70);
+//       controller.addActive(s1);
+//       //addActive( s2);
+//       
+
+//       
+//       Planet p3 = Planet.newSatelliteOf(p, 10, 20, 0);
+//       controller.addDrawable(p3);
+//       
+//       Random rand = new Random();
+//       for(int i = 0; i < 2; i ++){
+//           Planet tmp = Planet.newSatelliteOf(s1, rand.nextDouble()*100+52, 
+//                   rand.nextDouble()*100+10, rand.nextDouble()*2*Math.PI);
+//           controller.addActive(tmp);
+//       }
+       Star s1, s2, s3, s4;
+       s1 = new Star(new Point2d(-1000,-1000), 5, 5 );
+       s2 = new Star(new Point2d(1000,-1000), 5, 5 ); 
+       s3 = new Star(new Point2d(-1000,1000), 5, 5 );
+       s4 = new Star(new Point2d(1000,1000), 5, 5 );
        controller.addActive(s1);
-       //addActive( s2);
+       controller.addActive(s2);
+       controller.addActive(s3);
+       controller.addActive(s4);
        
-       Planet p = Planet.newSatelliteOf(s1, 70, 100, .1);
-      // Planet p2 = Planet.newSatelliteOf(s1, 100, 30, 1);
+      Star s5 = new Star(new Point2d(), 5,50);
+      Planet p = Planet.newSatelliteOf(s5, 50, 100, .1);
+      Planet p2 = Planet.newSatelliteOf(s1, 100, 30, 1);
       controller.addActive(p);
       // addDrawable(p2);
        
-       Planet p3 = Planet.newSatelliteOf(p, 10, 20, 0);
-       controller.addDrawable(p3);
-       
-       Random rand = new Random();
-       for(int i = 0; i < 2; i ++){
-           Planet tmp = Planet.newSatelliteOf(s1, rand.nextDouble()*100+52, 
-                   rand.nextDouble()*100+10, rand.nextDouble()*2*Math.PI);
-           controller.addActive(tmp);
-       }
-        
        
        addViewer();
        viewer.update();
@@ -137,11 +153,14 @@ public class MainViewController
                                 controller.getMap());
 
         
-
+       
        viewer = new ViewPane(overallView);
        viewer.setVisible(true);
        pane.getChildren().add(viewer);
-    
+       AnchorPane.setTopAnchor(viewer, 1.0);
+       AnchorPane.setBottomAnchor(viewer,1.0);
+       AnchorPane.setLeftAnchor(viewer, 1.0);
+       AnchorPane.setRightAnchor(viewer, 1.0);
        viewer.relocate(0, 0);
     }
     

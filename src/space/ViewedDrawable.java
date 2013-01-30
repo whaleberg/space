@@ -41,6 +41,7 @@ public class ViewedDrawable implements Drawable{
 
     @Override
     public Point2d getPos() {
+        System.out.println(d.getPos().toString()+"->"+v.view(d.getPos()));
         return v.view(d.getPos());
     }
     

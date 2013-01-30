@@ -77,7 +77,7 @@ public final class Rect {
         assert (r != null);
        
         if (r.aspectRatio() == this.aspectRatio()) {
-            return r;
+            return this;
         } else if (r.aspectRatio() < this.aspectRatio()) {
             return new Rect(this.topLeft, this.height, this.width / r.aspectRatio());
         } else if (r.aspectRatio() > this.aspectRatio()) {
