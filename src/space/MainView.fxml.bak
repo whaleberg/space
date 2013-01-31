@@ -8,9 +8,14 @@
 
 <AnchorPane id="AnchorPane" prefHeight="445.0" prefWidth="478.0" xmlns:fx="http://javafx.com/fxml" fx:controller="space.MainViewController">
   <children>
-    <SplitPane dividerPositions="0.5987394957983193" focusTraversable="true" prefHeight="445.0" prefWidth="478.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <SplitPane dividerPositions="0.657563025210084" focusTraversable="true" prefHeight="445.0" prefWidth="478.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
-        <Pane fx:id="pane" onMouseClicked="#handleMouseClick" />
+        <SplitPane id="SplitPane" dividerPositions="0.5011337868480725" orientation="VERTICAL">
+          <items>
+            <AnchorPane fx:id="selectionPane" prefHeight="200.0" prefWidth="200.0" />
+            <AnchorPane fx:id="pane" onMouseClicked="#handleMouseClick" prefHeight="200.0" prefWidth="200.0" />
+          </items>
+        </SplitPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="156.0">
           <children>
             <SplitPane id="SplitPane" dividerPositions="0.9455782312925171" orientation="VERTICAL" prefHeight="443.0" prefWidth="222.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

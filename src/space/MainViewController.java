@@ -33,21 +33,23 @@ public class MainViewController
     private ListView<Drawable> list; // Value injected by FXMLLoader
   
     @FXML //  fx:id="pane"
-    private AnchorPane pane; // Value injected by FXMLLoader
+    private AnchorPane mapPane; // Value injected by FXMLLoader
 
     @FXML
     private Button button;
-    private ViewPane viewer;
+    
+    @FXML
+    private AnchorPane selectionPane;
+    
+    private ViewPane mapViewer;
+    private ViewPane selectionViewer;
 
    // private final ObservableList<Active> actives = FXCollections.observableArrayList();
     
     public void handleButton(ActionEvent event){
         GameController.getInstance().age(1);
         
-            View overallView = new View(controller.getWorldBounds(), 
-                        new Rect(new Point2d(),pane.getHeight(), pane.getWidth()),
-                                controller.getMap());
-            viewer.update();
+            mapViewer.update();
       //  viewer.setView(overallView);
         
     }
@@ -60,7 +62,7 @@ public class MainViewController
                     new Vector2d(2,2));
         list.getItems().add(shp);
         controller.addActive(shp);
-        viewer.update();
+        mapViewer.update();
        
     }
     
@@ -72,7 +74,7 @@ public class MainViewController
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         assert list != null : "fx:id=\"list\" was not injected: check your FXML file 'MainView.fxml'.";
-        assert pane != null : "fx:id=\"pane\" was not injected: check your FXML file 'MainView.fxml'.";
+        assert mapPane != null : "fx:id=\"pane\" was not injected: check your FXML file 'MainView.fxml'.";
         
         // initialize your logic here: all @FXML variables will have been injecte
     
@@ -84,14 +86,14 @@ public class MainViewController
                 while (c.next()) {
                     ObservableList<? extends Drawable> selected = list.getSelectionModel().getSelectedItems();
                     for (Drawable s : list.getItems()) {
-                        final Node lookUpNode = viewer.lookUpNode(s);
+                        final Node lookUpNode = mapViewer.lookUpNode(s);
                         if (lookUpNode != null) {
                             lookUpNode.setScaleX(1.0);
                             lookUpNode.setScaleY(1.0);
                         }
                     }
                     for (Drawable s : selected) {
-                        final Node lookUpNode = viewer.lookUpNode(s);
+                        final Node lookUpNode = mapViewer.lookUpNode(s);
                         if (lookUpNode != null) {
                             lookUpNode.setScaleX(2.0);
                             lookUpNode.setScaleY(2.0);
@@ -146,25 +148,33 @@ public class MainViewController
        
        
        addViewer();
-       viewer.update();
+       mapViewer.update();
        list.getItems().addAll(data.getDrawable());
     }
 
     public void addViewer(){
-         View overallView = new View(controller.getWorldBounds(), 
-                        new Rect(new Point2d(),pane.getPrefHeight(), pane.getPrefWidth()),
+        View overallView = new View(controller.getWorldBounds(), 
+                        new Rect(new Point2d(),mapPane.getPrefHeight(), mapPane.getPrefWidth()),
                                 controller.getMap());
-
+      
+        mapViewer = new ViewPane(overallView);
+        overallView = new View(controller.getWorldBounds(), 
+                        new Rect(new Point2d(),mapPane.getPrefHeight(), mapPane.getPrefWidth()),
+                                controller.getMap());
+        selectionViewer = new ViewPane(overallView);
         
-       
-       viewer = new ViewPane(overallView);
-       viewer.setVisible(true);
-       pane.getChildren().add(viewer);
-       AnchorPane.setTopAnchor(viewer, 1.0);
-       AnchorPane.setBottomAnchor(viewer,1.0);
-       AnchorPane.setLeftAnchor(viewer, 1.0);
-       AnchorPane.setRightAnchor(viewer, 1.0);
-       viewer.relocate(0, 0);
+        installViewer(mapPane, mapViewer);
+        installViewer(selectionPane, selectionViewer);
+    }
+
+    private void installViewer(AnchorPane parent, ViewPane viewPane) {
+        viewPane.setVisible(true);
+        parent.getChildren().add(viewPane);
+        AnchorPane.setTopAnchor(viewPane, 1.0);
+        AnchorPane.setBottomAnchor(viewPane,1.0);
+        AnchorPane.setLeftAnchor(viewPane, 1.0);
+        AnchorPane.setRightAnchor(viewPane, 1.0);
+        viewPane.relocate(0, 0);
     }
     
     private static class PositionCell extends ListCell<Drawable> {
