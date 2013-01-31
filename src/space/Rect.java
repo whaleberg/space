@@ -4,6 +4,7 @@
  */
 package space;
 
+import java.util.Collection;
 import java.util.Objects;
 import vector.Point2d;
 /**
@@ -89,5 +90,24 @@ public final class Rect {
     
     public boolean hasZeroArea(){
         return height == 0 || width == 0;
+    }
+
+
+
+    
+    public static Rect boundingRect(Collection<Point2d> points) {
+        double l = Double.MAX_VALUE;
+        double r = 0;
+        double t = Double.MAX_VALUE;
+        double b = 0;
+        for (Point2d pos : points) {
+            l = Math.min(l, pos.getX());
+            r = Math.max(r, pos.getX());
+            t = Math.min(t, pos.getY());
+            b = Math.max(b, pos.getY());
+        }
+        Point2d lt = new Point2d(l, t);
+        Point2d rb = new Point2d(r, b);
+        return new Rect(lt, rb);
     }
 }

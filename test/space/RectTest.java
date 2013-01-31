@@ -4,6 +4,8 @@
  */
 package space;
 
+import com.google.common.collect.Lists;
+import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -105,6 +107,45 @@ public class RectTest {
         Rect result = instance.expandToAspectRatio(r);
         assertEquals(expResult, result);
     
+    }
+
+
+
+    /**
+     * Test of aspectRatio method, of class Rect.
+     */
+    @Test
+    public void testAspectRatio() {
+        System.out.println("aspectRatio");
+        Rect instance = new Rect(p10x10,10,20);
+        double expResult = 2.0;
+        double result = instance.aspectRatio();
+        assertEquals(expResult, result, 0.0);
+     
+    }
+
+    /**
+     * Test of hasZeroArea method, of class Rect.
+     */
+    @Test
+    public void testHasZeroArea() {
+        System.out.println("hasZeroArea");
+        Rect instance = new Rect(p0x0, p0x0);
+        boolean expResult = true;
+        boolean result = instance.hasZeroArea();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of boundingRect method, of class Rect.
+     */
+    @Test
+    public void testBoundingRect() {
+        System.out.println("boundingRect");
+        Collection<Point2d> items = Lists.newArrayList(p0x0,p100x100,p100x500, new Point2d(-10,20));
+        Rect expResult = new Rect(new Point2d(-10,0), new Point2d(100, 500));
+        Rect result = Rect.boundingRect(items);
+        assertEquals(expResult, result);
     }
   
     
