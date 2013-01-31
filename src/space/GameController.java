@@ -4,6 +4,7 @@
  */
 package space;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.Set;
 import javafx.collections.FXCollections;
@@ -16,6 +17,8 @@ import javafx.collections.ObservableSet;
 public class GameController {
     private static final GameData data = GameData.getInstance();
     private ObservableSet<Drawable> selected = FXCollections.observableSet();
+    
+    private Set<View> views = Sets.newHashSet();
     
     
     private GameController() {
@@ -36,9 +39,6 @@ public class GameController {
         data.addDrawable(d);
     }
     
-    public void addView(View v){
-       assert false;
-    }
     
     public static GameController getInstance() {
         return GameControllerHolder.INSTANCE;
@@ -51,6 +51,18 @@ public class GameController {
     public StarMap getMap(){
         return data.getStars();
     }
+
+    public void addView(View v){
+        views.add(v);
+    }
+    
+    public void removeView(View v){
+        views.remove(v);
+    }
+    
+    ImmutableSet<Drawable> watch(Rect viewingRect) {
+        return data.getStars().getWithinBounds(viewingRect);
+    }
     
     private static class GameControllerHolder {
 
@@ -60,6 +72,12 @@ public class GameController {
     private void setSelected(Set<Drawable> newSelection){
         selected.clear();
         selected.addAll(newSelection);
+    }
+    
+    private void update(){
+        for (View v: views){
+            v.update();
+        }
     }
     
     private ObservableSet<Drawable> getSelected(){

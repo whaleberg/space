@@ -154,14 +154,16 @@ public class MainViewController
 
     public void addViewer(){
         View overallView = new View(controller.getWorldBounds(), 
-                        new Rect(new Point2d(),mapPane.getPrefHeight(), mapPane.getPrefWidth()),
-                                controller.getMap());
-      
+                        new Rect(new Point2d(),mapPane.getPrefHeight(), mapPane.getPrefWidth()));
+                                
+        controller.addView(overallView);
         mapViewer = new ViewPane(overallView);
-        overallView = new View(controller.getWorldBounds(), 
-                        new Rect(new Point2d(),mapPane.getPrefHeight(), mapPane.getPrefWidth()),
-                                controller.getMap());
-        selectionViewer = new ViewPane(overallView);
+        View selectionView = new View(controller.getWorldBounds(), 
+                        new Rect(new Point2d(),mapPane.getPrefHeight(), mapPane.getPrefWidth()));
+         
+        controller.addView(selectionView); 
+        selectionViewer = new ViewPane(selectionView);
+        
         
         installViewer(mapPane, mapViewer);
         installViewer(selectionPane, selectionViewer);
@@ -175,6 +177,7 @@ public class MainViewController
         AnchorPane.setLeftAnchor(viewPane, 1.0);
         AnchorPane.setRightAnchor(viewPane, 1.0);
         viewPane.relocate(0, 0);
+        
     }
     
     private static class PositionCell extends ListCell<Drawable> {
