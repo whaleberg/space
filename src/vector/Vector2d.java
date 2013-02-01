@@ -235,7 +235,7 @@ public class Vector2d implements java.io.Serializable {
     @Override
    public String toString()
    {
-        return("(" + this.x + "," + this.y + ")");
+        return(String.format("(%.1f,%.1f)" , this.x ,this.y) );
    }
 
 
