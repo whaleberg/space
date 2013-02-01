@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableSet;
+import javafx.collections.SetChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -136,6 +137,22 @@ public class MainViewController
         
         installViewer(mapPane, mapViewer);
         installViewer(selectionPane, selectionViewer);
+        
+        controller.selectedProperty().addListener(new SetChangeListener<Drawable>(){
+
+            @Override
+            public void onChanged(SetChangeListener.Change<? extends Drawable> change) {
+               
+                View newSelectionView = new View(controller.getGroupBounds(change.getSet()),
+                                                    new Rect(new Point2d(), 
+                                                             selectionViewer.getHeight(), 
+                                                             selectionViewer.getWidth()));
+                selectionViewer.setView(newSelectionView);
+            }
+            
+        });
+       
+        
         
         controller.startUpdating(selectionViewer);
         controller.startUpdating(mapViewer);

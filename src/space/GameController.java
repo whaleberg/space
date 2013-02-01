@@ -68,6 +68,10 @@ public class GameController {
         return data.getStars().getBounds();
     }
     
+    public Rect getGroupBounds(Set<? extends Drawable> drawables){
+        return StarMap.boundingRect(drawables);
+    }
+    
 
     public void startUpdating(Updateable u){
        toUpdate.add(u);
