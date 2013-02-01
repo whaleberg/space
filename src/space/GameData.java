@@ -28,7 +28,9 @@ public class GameData {
     }
     public void addActive(Active a){
         activeRoots.add(a);
-        addDrawable(a);
+        if(a instanceof Drawable){
+            addDrawable((Drawable)a);
+        }
     }
     
     public StarMap getStars(){
