@@ -7,21 +7,18 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
-import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import vector.Point2d;
-import vector.Vector2d;
 
 
 public class MainViewController
@@ -64,29 +61,20 @@ public class MainViewController
         // initialize your logic here: all @FXML variables will have been injecte
     
        list.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-       list.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Drawable>() {
+       
+       final ObservableSet<Drawable> selectSet = FXCollections.observableSet();
+       list.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<Drawable>(){
 
             @Override
-            public void onChanged(Change<? extends Drawable> c) {
-                while (c.next()) {
-                    ObservableList<? extends Drawable> selected = list.getSelectionModel().getSelectedItems();
-                    for (Drawable s : list.getItems()) {
-                        final Node lookUpNode = mapViewer.lookUpNode(s);
-                        if (lookUpNode != null) {
-                            lookUpNode.setScaleX(1.0);
-                            lookUpNode.setScaleY(1.0);
-                        }
-                    }
-                    for (Drawable s : selected) {
-                        final Node lookUpNode = mapViewer.lookUpNode(s);
-                        if (lookUpNode != null) {
-                            lookUpNode.setScaleX(2.0);
-                            lookUpNode.setScaleY(2.0);
-                        }
-                    }
-                }
+            public void onChanged(Change<? extends Drawable> change) {
+                selectSet.clear();
+                selectSet.addAll(list.getSelectionModel().getSelectedItems());
             }
+       
        });
+       controller.setSelected(selectSet);
+   
+       
        
              
  
@@ -99,22 +87,6 @@ public class MainViewController
         });
        
       
-//       Star s1 = new Star( new Point2d(100, 100), 20, 50);
-//       //Star s2 = new Star( new Point2d(300, 200), 40, 70);
-//       controller.addActive(s1);
-//       //addActive( s2);
-//       
-
-//       
-//       Planet p3 = Planet.newSatelliteOf(p, 10, 20, 0);
-//       controller.addDrawable(p3);
-//       
-//       Random rand = new Random();
-//       for(int i = 0; i < 2; i ++){
-//           Planet tmp = Planet.newSatelliteOf(s1, rand.nextDouble()*100+52, 
-//                   rand.nextDouble()*100+10, rand.nextDouble()*2*Math.PI);
-//           controller.addActive(tmp);
-//       }
        Star s1, s2, s3, s4;
        s1 = new Star(new Point2d(-1000,-1000), 5, 5 );
        s2 = new Star(new Point2d(1000,-1000), 5, 5 ); 

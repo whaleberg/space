@@ -11,10 +11,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlySetProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.SetChangeListener;
+import javafx.collections.SetChangeListener.Change;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -111,6 +114,25 @@ public class ViewPane extends Pane implements Updateable {
 
             }
         });
+        
+        final ReadOnlySetProperty<Drawable> selected = GameController.getInstance().selectedProperty();
+        selected.addListener(new SetChangeListener<Drawable>(){
+
+            @Override
+            public void onChanged(Change<? extends Drawable> change) {
+                for(Node n : drawableMap.values()){
+                    n.setScaleX(1.0);
+                    n.setScaleY(1.0);
+                }
+                for(Drawable d: selected.get()){
+                    Node n =lookUpNode(d);
+                    if(n != null){
+                        n.setScaleX(2.0);
+                        n.setScaleY(2.0);
+                    }
+                }
+            }
+        });
     }
 
     public void setView(View view) {
@@ -147,7 +169,7 @@ public class ViewPane extends Pane implements Updateable {
         n.relocate(d.getPos().getX() - w / 2, d.getPos().getY() - h / 2);
     }
 
- 
+    
 
     private Node generateNode(Drawable d) {
         final double DEFAULT_RADIUS = 10;

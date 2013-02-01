@@ -8,7 +8,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.Collection;
 import java.util.Set;
-import javafx.collections.FXCollections;
+import javafx.beans.property.ReadOnlySetProperty;
+import javafx.beans.property.ReadOnlySetWrapper;
 import javafx.collections.ObservableSet;
 
 /**
@@ -17,7 +18,18 @@ import javafx.collections.ObservableSet;
  */
 public class GameController {
     private static final GameData data = GameData.getInstance();
-    private ObservableSet<Drawable> selected = FXCollections.observableSet();
+    
+    private ReadOnlySetWrapper<Drawable> selected = new ReadOnlySetWrapper<>();
+    public void setSelected(ObservableSet<Drawable> selection){
+        selected.set(selection);
+    }
+    public ObservableSet<Drawable> getSelected(){
+        return selected.get();
+    }
+    public ReadOnlySetProperty<Drawable> selectedProperty(){
+        return selected.getReadOnlyProperty();
+    }
+    
     
     private Set<Updateable> toUpdate = Sets.newHashSet();
     
@@ -75,19 +87,12 @@ public class GameController {
 
 
     }
-    
-    private void setSelected(Set<Drawable> newSelection){
-        selected.clear();
-        selected.addAll(newSelection);
-    }
-    
+        
     public void update(){
         for(Updateable u: toUpdate){
             u.update();
         }
     }
     
-    private ObservableSet<Drawable> getSelected(){
-        return selected;
-    }
+
 }
