@@ -6,6 +6,9 @@ package space;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map.Entry;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import vector.Point2d;
 
 /**
@@ -50,6 +53,8 @@ public class ViewedDrawable implements Drawable{
         return v.view(d.getPos());
     }
     
+    
+    
     @Override
     public String getID(){
         return d.getID();
@@ -59,4 +64,27 @@ public class ViewedDrawable implements Drawable{
     public String toString(){
         return getID();
     }
+
+    @Override
+    public ReadOnlyObjectProperty<Point2d> posProperty() {
+      
+        
+        final ReadOnlyObjectProperty<Point2d> pos = d.posProperty();
+        final ReadOnlyObjectWrapper<Point2d> out = new ReadOnlyObjectWrapper<>();
+        ObjectBinding<Point2d> transformed = new ObjectBinding<Point2d>(){
+            {
+                super.bind(pos);
+            }
+            
+            @Override
+            protected Point2d computeValue() {
+                return v.view(pos.get());
+            }
+            
+        };
+        out.bind(transformed);
+        return out.getReadOnlyProperty();
+    }
+
+ 
 }

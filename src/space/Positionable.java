@@ -4,6 +4,7 @@
  */
 package space;
 
+import javafx.beans.property.ReadOnlyObjectProperty;
 import vector.Point2d;
 
 /**
@@ -13,6 +14,6 @@ import vector.Point2d;
 public interface Positionable {
 
     public Point2d getPos();
-   
+    public ReadOnlyObjectProperty<Point2d> posProperty();
 
 }

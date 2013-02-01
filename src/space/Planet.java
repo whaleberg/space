@@ -4,6 +4,8 @@
  */
 package space;
 
+import javafx.beans.property.ReadOnlyObjectProperty;
+import vector.Point2d;
 import vector.Vector2d;
 
 /**
@@ -68,6 +70,8 @@ public class Planet extends AbstractOrbitable {
     public String getID(){
         return "Planet:"+super.getID();
     }
+
+
     
     
 }

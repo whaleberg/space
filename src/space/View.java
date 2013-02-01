@@ -7,7 +7,6 @@ package space;
 import com.google.common.collect.ImmutableSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sun.rmi.runtime.Log;
 import vector.Point2d;
 
 /**

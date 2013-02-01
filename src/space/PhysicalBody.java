@@ -4,6 +4,8 @@
  */
 package space;
 
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import vector.Point2d;
 
 /**
@@ -13,8 +15,11 @@ import vector.Point2d;
 public class PhysicalBody{
     private double mass;
     private double radius;
-    private Point2d position = new Point2d();
-
+    private ReadOnlyObjectWrapper<Point2d> position = new ReadOnlyObjectWrapper<>();
+    public ReadOnlyObjectProperty<Point2d> positionProperty() {
+        return position.getReadOnlyProperty();
+    }
+    
     public double getMass() {
         return mass;
     }
@@ -30,13 +35,14 @@ public class PhysicalBody{
     public void setRadius(double radius) {
         this.radius = radius;
     }
-
+    
+   
     public Point2d getPos() {
-        return new Point2d(position);
+        return position.get();
     }
     
     public void setPos(Point2d pos){
-        this.position = new Point2d(pos);
+       position.set(pos);
     }
   
 }

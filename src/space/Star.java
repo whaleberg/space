@@ -4,10 +4,6 @@
  */
 package space;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import vector.Point2d;
 
 /**
@@ -33,4 +29,5 @@ public class Star extends AbstractOrbitable{
     public String getID(){
         return "Star:"+super.getID();
     }
+
 }

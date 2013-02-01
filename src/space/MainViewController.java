@@ -2,6 +2,8 @@ package space;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
@@ -179,13 +181,28 @@ public class MainViewController
     }
     
     private static class PositionCell extends ListCell<Drawable> {
+       
         
         @Override
-        public void updateItem(Drawable item, boolean empty){
+        public void updateItem(final Drawable item, boolean empty){
             super.updateItem(item, empty);
-            Label lbl = new Label();
+            final Label lbl = new Label();
+            double x = 0;
+            double y = 0;
             if(item != null){
-                lbl.textProperty().set(item.getID());
+                lbl.textProperty().set(item.getID()+" "+item.getPos().toString());
+                item.posProperty().addListener(new ChangeListener<Point2d>(){
+
+                    @Override
+                    public void changed(ObservableValue<? extends Point2d> ov,
+                                        Point2d oldValue, Point2d newValue) {
+                       
+                        lbl.textProperty().set(item.getID()+" "+item.getPos().toString());
+                    }
+                    
+                });
+                
+               
                 setGraphic(lbl);
             }
         }
