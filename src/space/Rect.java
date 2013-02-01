@@ -7,6 +7,7 @@ package space;
 import java.util.Collection;
 import java.util.Objects;
 import vector.Point2d;
+import vector.Vector2d;
 /**
  *
  * @author sailfish
@@ -93,7 +94,19 @@ public final class Rect {
     }
 
 
-
+    public Point2d getCenter(){
+        return new Point2d((this.topLeft.getX()+width)/2,
+                            (this.topLeft.getY()+height)/2);
+    }
+    
+    public Rect centerOn(Point2d center){
+        Vector2d translation = center.getVector().sub(this.getCenter().getVector());
+        return new Rect(this.topLeft.translate(translation),height, width);
+    }
+    
+    public Rect centerOn(Rect rect){
+        return this.centerOn(rect.getCenter());
+    }
     
     public static Rect boundingRect(Collection<Point2d> points) {
         double l = Double.MAX_VALUE;

@@ -48,6 +48,7 @@ public class View {
     public void updateOutputRect(Rect r) {
         this.outputRect = r;
         viewingRect = idealViewingRect.expandToAspectRatio(outputRect);
+        viewingRect = viewingRect.centerOn(idealViewingRect);
         setScale();
     }
 
