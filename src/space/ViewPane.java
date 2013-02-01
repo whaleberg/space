@@ -4,11 +4,13 @@
  */
 package space;
 
+import com.google.common.collect.ImmutableSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,7 +31,7 @@ import vector.Vector2d;
  *
  * @author sailfish
  */
-public class ViewPane extends Pane {
+public class ViewPane extends Pane implements Updateable {
     final Circle tl = new Circle(0,0,50);
     final Circle tr = new Circle(this.getWidth()-1,0,50);
     final  Circle bl = new Circle(0, this.getHeight()-10, 50);
@@ -39,10 +41,13 @@ public class ViewPane extends Pane {
     final Map<String, Node> drawableMap = new HashMap<>();
     final Label lbl;
     final Set<Node> overlay = new HashSet<>();
+    private static final Logger LOG = Logger.getLogger(ViewPane.class.getName());
    
+    //private ImmutableSet<ViewedDrawable> watched;
+    
     public ViewPane(View view) {
         super();
-        this.view = view;
+        setView(view);
         
         lbl = new Label(this.view.toString());
         overlay.add(lbl);
@@ -69,7 +74,7 @@ public class ViewPane extends Pane {
                             br.setCenterX((double)t1);
                             mid.setCenterX((double)t1/2);
                             lbl.setText(ViewPane.this.view.toString());
-                            System.out.println("Width"+t1);
+                            //System.out.println("Width"+t1);
                             
                 }
             }
@@ -87,25 +92,28 @@ public class ViewPane extends Pane {
                             br.setCenterY((double)t1);
                             mid.setCenterY((double)t1/2);
                             lbl.setText(ViewPane.this.view.toString());
-                            System.out.println("Height:"+t1);
+                            //System.out.println("Height:"+t1);
 
                 }
             }
         });
         
-        this.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
+        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 Point2d click = new Point2d(e.getX(), e.getY());
-                System.out.println("View clicked:" + click + "->"+ 
-                                    ViewPane.this.view.project(click)) ;
+                LOG.log(Level.INFO, "View clicked:" + click + "->"
+                        + ViewPane.this.view.project(click));
+
+                Ship shp = new Ship(ViewPane.this.view.project(click), new Vector2d(2, 2));
+                GameController.getInstance().addActive(shp);
+
+
             }
-            
         });
     }
-    
-    public void setView(View view){
+
+    public void setView(View view) {
         this.view = view;
         update();
     }
@@ -167,6 +175,7 @@ public class ViewPane extends Pane {
         return n;
     }
 
+    @Override
     public void update() {
         ObservableList<Node> nodes = FXCollections.observableArrayList();
         for (Drawable d : view.getViewed()) {
@@ -175,7 +184,7 @@ public class ViewPane extends Pane {
    
         this.getChildren().setAll(nodes);
         //this.getChildren().addAll(overlay);
-        System.out.println(this.getChildren().toString());
+        //System.out.println(this.getChildren().toString());
     }
    
     

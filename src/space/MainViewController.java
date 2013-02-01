@@ -44,32 +44,15 @@ public class MainViewController
     private ViewPane mapViewer;
     private ViewPane selectionViewer;
 
-   // private final ObservableList<Active> actives = FXCollections.observableArrayList();
-    
+     
     public void handleButton(ActionEvent event){
-        GameController.getInstance().age(1);
-        
-            mapViewer.update();
-      //  viewer.setView(overallView);
-        
+        controller.age(1);
+           
     }
     
     
-   // Handler for Pane[fx:id="pane"] onMouseClicked
-    public void handleMouseClick(MouseEvent event) {
-        System.out.println(event.getSceneX()+"/"+event.getSceneY());
-        Ship shp =  new Ship( new Point2d(event.getSceneX(), event.getSceneY()), 
-                    new Vector2d(2,2));
-        list.getItems().add(shp);
-        controller.addActive(shp);
-        mapViewer.update();
-       
-    }
-    
-//    private void addActive(Active a){
-//        actives.add(a);
-//        addDrawable(a);
-//    }
+ 
+
     
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -143,30 +126,45 @@ public class MainViewController
       Star s5 = new Star(new Point2d(), 5,50);
       Planet p = Planet.newSatelliteOf(s5, 50, 100, .1);
       Planet p2 = Planet.newSatelliteOf(s1, 100, 30, 1);
+      controller.addActive(s5);
+      controller.addActive(p2);
       controller.addActive(p);
       // addDrawable(p2);
        
        
        addViewer();
-       mapViewer.update();
        list.getItems().addAll(data.getDrawable());
+       Updateable listForcer = new Updateable() {
+
+            @Override
+            public void update() {
+               list.getItems().setAll(data.getDrawable());
+            }
+        };
+       controller.startUpdating(listForcer);
+        
     }
 
+    
+    
     public void addViewer(){
         View overallView = new View(controller.getWorldBounds(), 
                         new Rect(new Point2d(),mapPane.getPrefHeight(), mapPane.getPrefWidth()));
                                 
-        controller.addView(overallView);
+
         mapViewer = new ViewPane(overallView);
         View selectionView = new View(controller.getWorldBounds(), 
                         new Rect(new Point2d(),mapPane.getPrefHeight(), mapPane.getPrefWidth()));
          
-        controller.addView(selectionView); 
+
         selectionViewer = new ViewPane(selectionView);
         
         
         installViewer(mapPane, mapViewer);
         installViewer(selectionPane, selectionViewer);
+        
+        controller.startUpdating(selectionViewer);
+        controller.startUpdating(mapViewer);
     }
 
     private void installViewer(AnchorPane parent, ViewPane viewPane) {

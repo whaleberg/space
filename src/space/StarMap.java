@@ -42,10 +42,7 @@ public class StarMap {
    }
    
       
-   public ObservableSet<Drawable> watch(Rect r){
-       return FXCollections.observableSet(getWithinBounds( r));
-   }
-   
+     
    public ImmutableSet<Drawable> getWithinBounds(Rect r){
       ImmutableSet.Builder<Drawable> contained = ImmutableSet.builder();
       for (Drawable p : map){

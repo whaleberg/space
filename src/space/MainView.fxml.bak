@@ -13,7 +13,7 @@
         <SplitPane id="SplitPane" dividerPositions="0.5011337868480725" orientation="VERTICAL">
           <items>
             <AnchorPane fx:id="selectionPane" prefHeight="200.0" prefWidth="200.0" />
-            <AnchorPane fx:id="pane" onMouseClicked="#handleMouseClick" prefHeight="200.0" prefWidth="200.0" />
+            <AnchorPane id="pane" fx:id="mapPane" onMouseClicked="#handleMouseClick" prefHeight="200.0" prefWidth="200.0" />
           </items>
         </SplitPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="156.0">

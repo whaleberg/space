@@ -4,6 +4,7 @@
  */
 package space;
 
+import com.google.common.collect.ImmutableSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import org.junit.After;
@@ -50,15 +51,15 @@ public class StarMapTest {
 
 
     /**
-     * Test of watch method, of class StarMap.
+     * Test of getWithinBounds method, of class StarMap.
      */
     @Test
-    public void testWatch() {
+    public void getWithinBounds() {
         System.out.println("watch");
         Rect r = new Rect(new Point2d(), 20,20);
         StarMap instance = map;
-        ObservableSet<Drawable> expResult = FXCollections.observableSet(d1,d2);
-        ObservableSet<Drawable> result = instance.watch(r);
+        ImmutableSet<Drawable> expResult = ImmutableSet.of(d1,d2);
+        ImmutableSet<Drawable> result = instance.getWithinBounds(r);
         assert(expResult.equals(result));
     }
 

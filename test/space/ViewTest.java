@@ -49,7 +49,7 @@ public class ViewTest {
     public void testView_double() {
         System.out.println("view");
         double length = 100;
-        View instance = new View(r100x100,r10x10, new StarMap());
+        View instance = new View(r100x100,r10x10);
         double expResult = 10;
         double result = instance.view(length);
         assertEquals(expResult, result, 0.0);
@@ -91,7 +91,7 @@ public class ViewTest {
     public void testView_Point2d() {
         System.out.println("view");
         Point2d p = new Point2d(5,5);
-        View instance = new View(r10x10, r10x10, new StarMap());
+        View instance = new View(r10x10, r10x10);
         Point2d expResult = new Point2d(5,5);
         Point2d result = instance.view(p);
         //System.out.println(result);
@@ -104,13 +104,13 @@ public class ViewTest {
        
      
          
-         instance = new View(r100x100, r10x10, new StarMap());
+         instance = new View(r100x100, r10x10);
          p = new Point2d(50, 50);
          expResult = new Point2d(5,5);
          result = instance.view(p);
          assertEquals(expResult,result);
          
-        instance = new View(r10x10Shift, r10x10, new StarMap());
+        instance = new View(r10x10Shift, r10x10);
          p = new Point2d(-5, -5);
          expResult = new Point2d(5,5);
          result = instance.view(p);
@@ -132,20 +132,7 @@ public class ViewTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getViewed method, of class View.
-     */
-    @Test
-    public void testGetViewed() {
-        System.out.println("getViewed");
-        View instance = null;
-        ObservableSet expResult = null;
-        ObservableSet result = instance.getViewed();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
+  
     /**
      * Test of toString method, of class View.
      */

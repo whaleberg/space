@@ -6,6 +6,7 @@ package space;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import java.util.Collection;
 import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
@@ -18,7 +19,7 @@ public class GameController {
     private static final GameData data = GameData.getInstance();
     private ObservableSet<Drawable> selected = FXCollections.observableSet();
     
-    private Set<View> views = Sets.newHashSet();
+    private Set<Updateable> toUpdate = Sets.newHashSet();
     
     
     private GameController() {
@@ -28,15 +29,22 @@ public class GameController {
         for(Active a:  data.getActive()){
             a.age(seconds);
         }
+        update();
        
     }
     
     public void addActive(Active a){
         data.addActive(a);
+        update();
     }
     
     public void addDrawable(Drawable d){
         data.addDrawable(d);
+        update();
+    }
+    
+    public Collection<Drawable> getDrawable(){
+        return data.getDrawable();
     }
     
     
@@ -48,16 +56,13 @@ public class GameController {
         return data.getStars().getBounds();
     }
     
-    public StarMap getMap(){
-        return data.getStars();
-    }
 
-    public void addView(View v){
-        views.add(v);
+    public void startUpdating(Updateable u){
+       toUpdate.add(u);
     }
     
-    public void removeView(View v){
-        views.remove(v);
+    public void stopUpdating(Updateable u){
+        toUpdate.remove(u);
     }
     
     ImmutableSet<Drawable> watch(Rect viewingRect) {
@@ -67,6 +72,8 @@ public class GameController {
     private static class GameControllerHolder {
 
         private static final GameController INSTANCE = new GameController();
+
+
     }
     
     private void setSelected(Set<Drawable> newSelection){
@@ -74,9 +81,9 @@ public class GameController {
         selected.addAll(newSelection);
     }
     
-    private void update(){
-        for (View v: views){
-            v.update();
+    public void update(){
+        for(Updateable u: toUpdate){
+            u.update();
         }
     }
     

@@ -17,6 +17,11 @@ public class ViewedDrawable implements Drawable{
     private final Drawable d;
     private final View v;
     private ImmutableMap<String, Double> scaledMap= null;
+    
+    public static ViewedDrawable wrap(Drawable d, View v){
+        return new ViewedDrawable(d, v);
+    }
+    
     public ViewedDrawable(Drawable d, View v){
         this.d = d;
         this.v = v;
@@ -41,12 +46,17 @@ public class ViewedDrawable implements Drawable{
 
     @Override
     public Point2d getPos() {
-        System.out.println(d.getPos().toString()+"->"+v.view(d.getPos()));
+        //System.out.println(d.getPos().toString()+"->"+v.view(d.getPos()));
         return v.view(d.getPos());
     }
     
     @Override
     public String getID(){
         return d.getID();
+    }
+    
+    @Override
+    public String toString(){
+        return getID();
     }
 }
