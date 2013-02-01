@@ -8,9 +8,6 @@ package space;
 import com.google.common.collect.ImmutableMap;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import vector.Point2d;
 import vector.Vector2d;
 /**
@@ -31,12 +28,13 @@ public class Ship implements Active, Drawable{
     }
     
     private ReadOnlyObjectWrapper<Point2d> position = new ReadOnlyObjectWrapper<>();
-    public Point2d getPosition() {
+    public final Point2d getPosition() {
         return position.get();
     }
     private void setPosition(Point2d point) {
         position.set(point);
     }
+    @Override
     public ReadOnlyObjectProperty<Point2d> posProperty() {
         return position.getReadOnlyProperty();
     }
