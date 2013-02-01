@@ -58,6 +58,9 @@ public class StarMap {
     }
    
     public static Rect boundingRect(Collection<? extends Positionable> items) {
+        if (items.isEmpty()){
+            return new Rect(new Point2d(), 0,0);
+        }
         double l = Double.MAX_VALUE;
         double r = 0;
         double t = Double.MAX_VALUE;

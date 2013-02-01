@@ -6,6 +6,8 @@ package space;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import vector.Point2d;
 import vector.Vector2d;
 /**
@@ -13,6 +15,7 @@ import vector.Vector2d;
  * @author sailfish
  */
 public final class Rect {
+    private static final Logger LOG = Logger.getLogger(Rect.class.getName());
 
     @Override
     public int hashCode() {
@@ -77,16 +80,33 @@ public final class Rect {
     
     public Rect expandToAspectRatio(Rect r) {
         assert (r != null);
-       
-        if (r.aspectRatio() == this.aspectRatio()) {
-            return this;
-        } else if (this.aspectRatio() < r.aspectRatio() ) {
-            return new Rect(this.topLeft, this.height, this.width * r.aspectRatio());
-        } else if (this.aspectRatio() > r.aspectRatio()) {
-            return new Rect(this.topLeft, this.height / r.aspectRatio(), this.width);
-        }
-        throw new AssertionError("Something is wrong if it got here...");
+        assert (!hasZeroArea());
+        assert (!r.hasZeroArea());
+        assert (!Double.isNaN(this.aspectRatio()));
+        assert (!Double.isNaN(r.aspectRatio()));
+        double thisRatio = this.aspectRatio();
+        double rRatio = r.aspectRatio();
         
+        if (rRatio == thisRatio) {
+            return this;
+        } else if (thisRatio <= rRatio) {
+            return new Rect(this.topLeft, this.height, this.width * rRatio);
+        } else if (thisRatio >= rRatio) {
+            return new Rect(this.topLeft, this.height / rRatio, this.width);
+        } else if (thisRatio == Double.NaN || rRatio == Double.NaN) {
+            throw new AssertionError("NaN");
+        }
+        LOG.log(Level.WARNING, "Returned a default rectangle from expandToAspectRatio."
+                +thisRatio+" "+ rRatio);
+        return new Rect(new Point2d(), 10, 10);
+    }
+    
+    public Rect scale(Double factor){
+        return new Rect(this.topLeft, height*factor, width*factor);
+    }
+    
+    public Rect scaleFromCenter(Double factor){
+        return this.scale(factor).centerOn(this);
     }
     
     public boolean hasZeroArea(){

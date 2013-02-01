@@ -26,8 +26,8 @@ public class View {
     
   
     public View(Rect viewingRect, Rect outputRect) {
-        assert (viewingRect != null);
-        assert (outputRect != null);
+        assert (viewingRect != null && !viewingRect.hasZeroArea());
+        assert (outputRect != null && !outputRect.hasZeroArea());
 
         this.idealViewingRect = viewingRect;
         this.viewingRect = viewingRect.expandToAspectRatio(outputRect);
@@ -46,7 +46,11 @@ public class View {
     }
 
     public void updateOutputRect(Rect r) {
-        this.outputRect = r;
+        if(r.hasZeroArea()){
+            this.outputRect = new Rect(new Point2d(), 10, 10);
+        } else {
+            this.outputRect = r;
+        }
         viewingRect = idealViewingRect.expandToAspectRatio(outputRect);
         viewingRect = viewingRect.centerOn(idealViewingRect);
         setScale();
@@ -82,4 +86,9 @@ public class View {
     }
 
   
+//    public static View viewSelectedItems(ObservableSet<Drawable> d){
+//        
+//        return null;
+//    }
+    
 }

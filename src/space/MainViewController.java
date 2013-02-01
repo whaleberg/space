@@ -142,12 +142,14 @@ public class MainViewController
 
             @Override
             public void onChanged(SetChangeListener.Change<? extends Drawable> change) {
-               
-                View newSelectionView = new View(controller.getGroupBounds(change.getSet()),
-                                                    new Rect(new Point2d(), 
-                                                             selectionViewer.getHeight(), 
-                                                             selectionViewer.getWidth()));
-                selectionViewer.setView(newSelectionView);
+                Rect bounds = controller.getGroupBounds(change.getSet());
+                if(!bounds.hasZeroArea()){
+                    bounds = bounds.scaleFromCenter(2.0);
+                    View newSelectionView = new View(bounds, new Rect(new Point2d(), 
+                                                         selectionViewer.getHeight(), 
+                                                         selectionViewer.getWidth()));
+                    selectionViewer.setView(newSelectionView);
+                }
             }
             
         });
