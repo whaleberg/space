@@ -1,3 +1,12 @@
+/*This file is based on the java vecmath package( available at 
+ * http://java.net/projects/vecmath/), but has been modified from its 
+ * original form.  
+ * Modifications were made by Louis Bergelson - whaleberg@gmail.com.
+ * This modified version maintains the classpath exception.
+ * The following is the original copyright and licensing notice.
+ * 2/2/13
+ */
+
 /*
  * $RCSfile$
  *
