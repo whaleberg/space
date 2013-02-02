@@ -4,16 +4,19 @@
  */
 package space;
 
+import vector.Point2d;
 import vector.Vector2d;
 
 /**
  *
  * @author sailfish
  */
-public class Planet extends AbstractOrbitable {
+public class Planet implements Orbiter{
+    private PhysicalBody body;
     private double orbitalRadius;
     private double orbitalPeriod;
     private double orbitalAngle;
+    private Orbitable parent;
     
     public static Planet newSatelliteOf(Orbitable orb, double orbitalRadius,
             double orbitalPeriod, double orbitalAngle){
@@ -26,19 +29,20 @@ public class Planet extends AbstractOrbitable {
         this.orbitalRadius = orbitalRadius;
         this.orbitalPeriod = orbitalPeriod;
         this.orbitalAngle = orbitalAngle;
+        body = new PhysicalBody();
     }
    
     private void orbit(long seconds){
-        if (getParent() != null){
+        if (parent != null){
+            System.out.print("Orbit:"+body.getPos().toString() + " -> ");
             double changeInAngle = (seconds / orbitalPeriod )*2*Math.PI;
             orbitalAngle += changeInAngle;
             while(orbitalAngle > 2*Math.PI){
                 orbitalAngle -= 2*Math.PI;
             }
             Vector2d displace = getAngleVector(orbitalAngle).scale(orbitalRadius);
-            this.getBody().setPos(getParent().getPos().translate(displace));
-        } else {
-            System.err.println("Planet with null parent");
+            this.body.setPos(parent.getPos().translate(displace));
+            System.out.println(body.getPos().toString());
         }
     }
     
@@ -49,9 +53,12 @@ public class Planet extends AbstractOrbitable {
     @Override
     public void age(long seconds) {
         this.orbit(seconds);
-        super.age(seconds);
     }
 
+    @Override
+    public Point2d getPos() {
+        return body.getPos();
+    }
 
     @Override
     public IconType getIconType() {
@@ -60,11 +67,10 @@ public class Planet extends AbstractOrbitable {
 
     @Override
     public void setParent(Orbitable orb) {
-        super.setParent(orb);
+        parent = orb;
         orbit(0);
     }
 
- 
     
     
 }
