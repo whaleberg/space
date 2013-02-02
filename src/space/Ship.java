@@ -6,8 +6,11 @@ package space;
 
 
 import com.google.common.collect.ImmutableMap;
+import javafx.beans.property.ReadOnlyListProperty;
+import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.ObservableList;
 import vector.Point2d;
 import vector.Vector2d;
 /**
@@ -16,6 +19,17 @@ import vector.Vector2d;
  */
 public class Ship implements Active, Drawable{
 
+    private ReadOnlyListWrapper<Mission> missions = new ReadOnlyListWrapper<>();
+    private void setMissions(ObservableList<Mission> missionList){
+        missions.set(missionList);
+    }
+    public ReadOnlyListProperty<Mission> missionsProperty(){
+        return missions.getReadOnlyProperty();
+    }
+    public ObservableList<Mission> getMissions(){
+        return missions.get();
+    }
+    
     private ReadOnlyObjectWrapper<Vector2d> velocity = new ReadOnlyObjectWrapper<>();
     public Vector2d getVelocity(){
         return velocity.get();
