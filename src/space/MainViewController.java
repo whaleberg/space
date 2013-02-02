@@ -54,14 +54,20 @@ public class MainViewController
      for (Active a : actives){
          a.age(1);
          if(a instanceof Orbitable){
-             for(Orbiter orb: ((Orbitable)a).getDirectOrbiting()){
-                 updateNode(orb);
-             }
+             updateTreeOfOrbitables((Orbitable)a);
+         } else {
+             updateNode(a);
          }
-         updateNode(a);
      }
     }
 
+    private void updateTreeOfOrbitables(Orbitable orb){
+        updateNode(orb);
+        for(Orbitable o : orb.getDirectOrbiting()){
+            updateTreeOfOrbitables(o);
+        }
+    }
+    
     private Node generateNode(Drawable d){
         Node n;
          switch (d.getIconType()){
@@ -156,10 +162,12 @@ public class MainViewController
        addActive( s2);
        
        Planet p = Planet.newSatelliteOf(s1, 70, 100, .1);
-       Planet p2 = Planet.newSatelliteOf(s1, 100, 30, 1);
+      // Planet p2 = Planet.newSatelliteOf(s1, 100, 30, 1);
        addDrawable(p);
-       addDrawable(p2);
- 
+      // addDrawable(p2);
+       
+       Planet p3 = Planet.newSatelliteOf(p, 10, 20, 0);
+       addDrawable(p3);
         
     }
 

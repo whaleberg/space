@@ -14,9 +14,10 @@ import java.util.Collection;
  */
 public interface Orbitable extends Active{
     
-    public Collection<Orbiter> getDirectOrbiting();
+    public Collection<Orbitable> getDirectOrbiting();
     public double getMass();
     public double getRadius();
-    public boolean addOrbiter(Orbiter orb);
-    public boolean removeOrbiter(Orbiter orb);
+    public boolean addOrbiter(Orbitable orb);
+    public boolean removeOrbiter(Orbitable orb);
+    public void setParent(Orbitable orb);
 }
