@@ -1,3 +1,12 @@
+/*This file is based on the java vecmath package( available at 
+ * http://java.net/projects/vecmath/), but has been modified from its 
+ * original form.  
+ * Modifications were made by Louis Bergelson - whaleberg@gmail.com.
+ * This modified version maintains the classpath exception.
+ * The following is the original copyright and licensing notice.  
+ * 2/2/13
+ */
+
 /*
  * $RCSfile$
  *
@@ -37,6 +46,7 @@ package vector;
  *
  */
 public class Vector2d implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * The x coordinate.
@@ -235,7 +245,7 @@ public class Vector2d implements java.io.Serializable {
     @Override
    public String toString()
    {
-        return("(" + this.x + "," + this.y + ")");
+        return(String.format("(%.1f,%.1f)" , this.x ,this.y) );
    }
 
 

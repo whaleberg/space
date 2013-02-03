@@ -8,8 +8,8 @@ package space;
  *
  * @author sailfish
  */
-public interface Active{
+public interface Updateable {
     
-    public void age(long seconds);
+    public void update();
     
 }

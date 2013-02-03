@@ -5,9 +5,12 @@
 package space;
 
 
-import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import com.google.common.collect.ImmutableMap;
+import javafx.beans.property.ReadOnlyListProperty;
+import javafx.beans.property.ReadOnlyListWrapper;
+import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.ObservableList;
 import vector.Point2d;
 import vector.Vector2d;
 /**
@@ -16,8 +19,42 @@ import vector.Vector2d;
  */
 public class Ship implements Active, Drawable{
 
-    private Point2d position;
-    private Vector2d velocity;
+    private ReadOnlyListWrapper<Mission> missions = new ReadOnlyListWrapper<>();
+    private void setMissions(ObservableList<Mission> missionList){
+        missions.set(missionList);
+    }
+    public ReadOnlyListProperty<Mission> missionsProperty(){
+        return missions.getReadOnlyProperty();
+    }
+    public ObservableList<Mission> getMissions(){
+        return missions.get();
+    }
+    
+    private ReadOnlyObjectWrapper<Vector2d> velocity = new ReadOnlyObjectWrapper<>();
+    public Vector2d getVelocity(){
+        return velocity.get();
+    }
+    private void setVelocity(Vector2d veloc){
+        velocity.set(veloc);
+    }
+    public ReadOnlyObjectProperty<Vector2d> velocityProperty(){
+        return velocity.getReadOnlyProperty();
+    }
+    
+    private ReadOnlyObjectWrapper<Point2d> position = new ReadOnlyObjectWrapper<>();
+    public final Point2d getPosition() {
+        return position.get();
+    }
+    private void setPosition(Point2d point) {
+        position.set(point);
+    }
+    @Override
+    public ReadOnlyObjectProperty<Point2d> posProperty() {
+        return position.getReadOnlyProperty();
+    }
+    
+    
+    private final String ID;
     
     public static final IconType icon = IconType.SHIP;
     
@@ -25,16 +62,16 @@ public class Ship implements Active, Drawable{
     
     public Ship(Point2d position, Vector2d velocity){
 
-        this.position = new Point2d(position);
-        this.velocity = new Vector2d(velocity);
-        this.relocate(this.position);
-       
+        setPosition(position);
+        setVelocity(velocity);
+        this.relocate(getPosition());
+        this.ID = "Ship:"+StaticUtility.createID();
     }
     
 
     
     public String getPositionAsAString(){
-        return position.getX() +"/" + position.getY();
+        return getPosition().getX() +"/" + getPosition().getY();
     }
     
     
@@ -44,19 +81,18 @@ public class Ship implements Active, Drawable{
     }
     
     private void travel(long seconds){
-       Point2d newPos = this.position.translate(velocity.scale(seconds));
+       Point2d newPos = getPosition().translate(getVelocity().scale(seconds));
       
        relocate(newPos);
     }
     
     public final void relocate(Point2d newPosition){
-        position = newPosition;
-        setPositionString(getPositionAsAString());
+        setPosition(newPosition);
     }
 
     @Override
     public Point2d getPos() {
-        return new Point2d(this.position);
+        return getPosition();
     }
     @Override
     public String toString(){
@@ -65,17 +101,22 @@ public class Ship implements Active, Drawable{
     
     
 
-    
+       @Override
+    public String getID(){
+        return ID;
+    }
 
-
-    private StringProperty positionString = new SimpleStringProperty();
-    public ReadOnlyStringProperty positionStringProperty() { return positionString; }
-    public String getPositionString() { return positionString.get(); }
-    private void setPositionString(String value) { positionString.set(value); }
 
     @Override
     public IconType getIconType() {
         return icon;
     }
 
+    @Override
+    public ImmutableMap<String, Double> getDrawingParameters() {
+       return ImmutableMap.of();
+    }
+
+ 
+    
 }

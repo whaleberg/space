@@ -8,8 +8,8 @@ package space;
  *
  * @author sailfish
  */
-public interface Displayable {
+public interface Path {
     
-   
-   
+    public boolean Intersects(Path path);
+    
 }

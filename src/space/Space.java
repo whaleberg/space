@@ -25,6 +25,7 @@ public class Space extends Application {
         
         stage.setScene(scene);
         stage.show();
+        
     }
     
     /**

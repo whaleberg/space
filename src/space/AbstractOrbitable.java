@@ -4,10 +4,12 @@
  */
 package space;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import vector.Point2d;
 
 /**
@@ -17,6 +19,17 @@ import vector.Point2d;
 public abstract class AbstractOrbitable implements Orbitable {
     private final PhysicalBody body = new PhysicalBody();
     private Orbitable parent = null;
+    
+    private final String ID;
+    
+    public AbstractOrbitable(){
+        this.ID = StaticUtility.createID();
+    }
+    
+    @Override
+    public String getID(){
+        return ID;
+    }
     
     public PhysicalBody getBody() {
         return body;
@@ -71,4 +84,15 @@ public abstract class AbstractOrbitable implements Orbitable {
         return parent;
     }
     
+    @Override
+    public ReadOnlyObjectProperty<Point2d> posProperty(){
+        return body.positionProperty();
+    }
+    
+    @Override
+    public ImmutableMap<String, Double> getDrawingParameters(){
+        ImmutableMap.Builder<String,Double> bld = ImmutableMap.builder();
+        bld.put("RADIUS", this.getRadius());
+        return bld.build();
+    }
 }

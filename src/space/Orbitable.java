@@ -12,7 +12,7 @@ import java.util.Collection;
  * 
  * Must override age() to call age on all of it's children.
  */
-public interface Orbitable extends Active{
+public interface Orbitable extends Drawable, Active{
     
     public Collection<Orbitable> getDirectOrbiting();
     public double getMass();

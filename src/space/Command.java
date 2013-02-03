@@ -8,8 +8,7 @@ package space;
  *
  * @author sailfish
  */
-public interface Active{
-    
-    public void age(long seconds);
-    
+public interface Command {
+    public int followOrders(Ship s, int seconds);
 }
+

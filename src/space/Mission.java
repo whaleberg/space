@@ -4,12 +4,13 @@
  */
 package space;
 
+import java.util.List;
+
 /**
  *
  * @author sailfish
  */
-public interface Active{
-    
-    public void age(long seconds);
-    
+public interface Mission{
+        
+    public Command plan(Ship s);
 }
