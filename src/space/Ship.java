@@ -11,6 +11,7 @@ import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.ObservableList;
+import space.mission.Mission;
 import vector.Point2d;
 import vector.Vector2d;
 /**
@@ -18,7 +19,8 @@ import vector.Vector2d;
  * @author sailfish
  */
 public class Ship implements Active, Drawable{
-
+	public static double MAXSPEED = 10;
+	
     private ReadOnlyListWrapper<Mission> missions = new ReadOnlyListWrapper<>();
     private void setMissions(ObservableList<Mission> missionList){
         missions.set(missionList);
@@ -53,6 +55,11 @@ public class Ship implements Active, Drawable{
         return position.getReadOnlyProperty();
     }
     
+    public void setDesiredSpeed(double speed){
+    	speed = Math.max(0, speed);
+    	speed = Math.min(speed, MAXSPEED);
+    	setVelocity(getVelocity().normalize().scale(speed) );
+    }
     
     private final String ID;
     
