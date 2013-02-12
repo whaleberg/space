@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.StringProperty;
 import vector.Point2d;
 
 /**
@@ -85,6 +86,21 @@ public class ViewedDrawable implements Drawable{
         out.bind(transformed);
         return out.getReadOnlyProperty();
     }
+
+	@Override
+	public String getName() {
+		return d.getName();
+	}
+
+	@Override
+	public void setName(String newName) {
+		d.setName(newName);
+	}
+
+	@Override
+	public StringProperty nameProperty() {
+		return d.nameProperty();
+	}
 
  
 }

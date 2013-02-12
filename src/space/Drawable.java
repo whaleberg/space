@@ -4,6 +4,8 @@
  */
 package space;
 
+import javafx.beans.property.StringProperty;
+
 import com.google.common.collect.ImmutableMap;
 
 /**
@@ -15,4 +17,8 @@ public interface Drawable extends Positionable {
     public IconType getIconType();
     public ImmutableMap<String, Double> getDrawingParameters(); 
     public String getID();
+    public String getName();
+    public void setName(String newName);
+    public StringProperty nameProperty();
+    
 }

@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import vector.Point2d;
 
 /**
@@ -20,10 +22,24 @@ public abstract class AbstractOrbitable implements Orbitable {
     private final PhysicalBody body = new PhysicalBody();
     private Orbitable parent = null;
     
+  
+    
     private final String ID;
+    private final StringProperty name;
+    public String getName(){
+    	return name.getValue();
+    }
+    public void setName(String newName){
+    	this.name.set(newName);
+    }
+    public StringProperty nameProperty(){
+    	return name;
+    	
+    }
     
     public AbstractOrbitable(){
-        this.ID = StaticUtility.createID();
+    	ID = StaticUtility.createID();
+    	name = new SimpleStringProperty(ID);
     }
     
     @Override
