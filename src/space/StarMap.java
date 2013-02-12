@@ -5,15 +5,16 @@
 package space;
 
 
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableSet;
+
 import vector.Point2d;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+
 
 
 /**

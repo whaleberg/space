@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package space;
+package test.space;
 
 import com.google.common.collect.Lists;
 import java.util.Collection;
@@ -12,6 +12,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import space.Rect;
 import vector.Point2d;
 
 /**
@@ -23,7 +25,6 @@ public class RectTest {
     private final Point2d p0x0 =new Point2d();
     private final Point2d p10x10 = new Point2d(10,10);
     private final Point2d p100x100 = new Point2d(100,100);
-    private final Point2d p5x10 = new Point2d(5,10);
     private final Point2d p10x5 = new Point2d(10,5);
     private final Point2d p100x500 = new Point2d(100,500);
     private final Point2d p500x500 = new Point2d(500,500);

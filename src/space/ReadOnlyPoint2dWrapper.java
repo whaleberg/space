@@ -32,10 +32,7 @@ public class ReadOnlyPoint2dWrapper extends ReadOnlyObjectWrapper<Point2d>{
     
     public ObjectBinding<Point2d> translate(final Vector2d vect){
         return new ObjectBinding<Point2d>() {
-            {
-               final Vector2d v = vect;
-            }
-            
+
             @Override
             protected Point2d computeValue() {
                 return ReadOnlyPoint2dWrapper.this.get().translate(vect);

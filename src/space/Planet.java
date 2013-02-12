@@ -4,8 +4,7 @@
  */
 package space;
 
-import javafx.beans.property.ReadOnlyObjectProperty;
-import vector.Point2d;
+
 import vector.Vector2d;
 
 /**

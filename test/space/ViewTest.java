@@ -2,15 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package space;
+package test.space;
 
-import javafx.collections.ObservableSet;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import space.Rect;
+import space.View;
 import vector.Point2d;
 
 /**
@@ -56,33 +59,7 @@ public class ViewTest {
     
     }
 
-    /**
-     * Test of project method, of class View.
-     */
-    @Test
-    public void testProject_double() {
-        System.out.println("project");
-        double length = 0.0;
-        View instance = null;
-        double expResult = 0.0;
-        double result = instance.project(length);
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
-    /**
-     * Test of updateOutputRect method, of class View.
-     */
-    @Test
-    public void testUpdateOutputRect() {
-        System.out.println("updateOutputRect");
-        Rect r = null;
-        View instance = null;
-        instance.updateOutputRect(r);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
     /**
      * Test of view method, of class View.
@@ -117,33 +94,5 @@ public class ViewTest {
          assertEquals(expResult,result);
     }
 
-    /**
-     * Test of project method, of class View.
-     */
-    @Test
-    public void testProject_Point2d() {
-        System.out.println("project");
-        Point2d p = null;
-        View instance = null;
-        Point2d expResult = null;
-        Point2d result = instance.project(p);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
-  
-    /**
-     * Test of toString method, of class View.
-     */
-    @Test
-    public void testToString() {
-        System.out.println("toString");
-        View instance = null;
-        String expResult = "";
-        String result = instance.toString();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 }

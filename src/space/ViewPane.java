@@ -4,20 +4,20 @@
  */
 package space;
 
-import com.google.common.collect.ImmutableSet;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.beans.property.ReadOnlySetProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.SetChangeListener;
-import javafx.collections.SetChangeListener.Change;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -73,9 +73,9 @@ public class ViewPane extends Pane implements Updateable {
                             ViewPane.this.getHeight(),
                             ViewPane.this.getWidth()));
                             ViewPane.this.update();
-                            tr.setCenterX((double)t1);
-                            br.setCenterX((double)t1);
-                            mid.setCenterX((double)t1/2);
+                            tr.setCenterX(t1.doubleValue());
+                            br.setCenterX(t1.doubleValue());
+                            mid.setCenterX(t1.doubleValue()/2);
                             lbl.setText(ViewPane.this.view.toString());
                             //System.out.println("Width"+t1);
                             
@@ -91,9 +91,9 @@ public class ViewPane extends Pane implements Updateable {
                             ViewPane.this.getHeight(),
                             ViewPane.this.getWidth()));
                             ViewPane.this.update();
-                            bl.setCenterY((double)t1);
-                            br.setCenterY((double)t1);
-                            mid.setCenterY((double)t1/2);
+                            bl.setCenterY(t1.doubleValue());
+                            br.setCenterY(t1.doubleValue());
+                            mid.setCenterY(t1.doubleValue()/2);
                             lbl.setText(ViewPane.this.view.toString());
                             //System.out.println("Height:"+t1);
 

@@ -2,18 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package space;
+package test.space;
 
-import com.google.common.collect.ImmutableSet;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableSet;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import space.Drawable;
+import space.Rect;
+import space.Star;
+import space.StarMap;
 import vector.Point2d;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  *

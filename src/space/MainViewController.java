@@ -2,11 +2,12 @@ package space;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.event.ActionEvent;
@@ -178,8 +179,7 @@ public class MainViewController
         public void updateItem(final Drawable item, boolean empty){
             super.updateItem(item, empty);
             final Label lbl = new Label();
-            double x = 0;
-            double y = 0;
+
             if(item != null){
                 lbl.textProperty().set(item.getID()+" "+item.getPos().toString());
                 item.posProperty().addListener(new ChangeListener<Point2d>(){
