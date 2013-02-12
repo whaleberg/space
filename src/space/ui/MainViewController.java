@@ -24,10 +24,10 @@ import space.Drawable;
 import space.GameController;
 import space.GameData;
 import space.Planet;
-import space.Rect;
 import space.Star;
 import space.Updateable;
 import space.View;
+import space.geometry.Rect;
 import vector.Point2d;
 
 

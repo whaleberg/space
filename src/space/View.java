@@ -7,6 +7,8 @@ package space;
 import com.google.common.collect.ImmutableSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import space.geometry.Rect;
 import vector.Point2d;
 
 /**

@@ -13,9 +13,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import space.Drawable;
-import space.Rect;
 import space.Star;
 import space.StarMap;
+import space.geometry.Rect;
 import vector.Point2d;
 
 import com.google.common.collect.ImmutableSet;

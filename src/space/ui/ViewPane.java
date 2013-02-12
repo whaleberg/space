@@ -29,10 +29,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import space.Drawable;
 import space.GameController;
-import space.Rect;
 import space.Ship;
 import space.Updateable;
 import space.View;
+import space.geometry.Rect;
 import vector.Point2d;
 import vector.Vector2d;
 
