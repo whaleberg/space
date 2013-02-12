@@ -2,11 +2,12 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="445.0" prefWidth="478.0" xmlns:fx="http://javafx.com/fxml" fx:controller="space.MainViewController">
+<AnchorPane id="AnchorPane" prefHeight="445.0" prefWidth="478.0" xmlns:fx="http://javafx.com/fxml" fx:controller="space.ui.MainViewController">
   <children>
     <SplitPane dividerPositions="0.657563025210084" focusTraversable="true" prefHeight="445.0" prefWidth="478.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <items>
@@ -18,11 +19,15 @@
         </SplitPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="156.0">
           <children>
-            <SplitPane id="SplitPane" dividerPositions="0.9455782312925171" orientation="VERTICAL" prefHeight="443.0" prefWidth="222.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <SplitPane id="SplitPane" dividerPositions="0.9455782312925171" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <items>
-                <VBox id="VBox" alignment="CENTER" prefHeight="443.0" spacing="5.0">
+                <VBox id="VBox" alignment="CENTER" spacing="5.0">
                   <children>
-                    <ListView fx:id="list" prefHeight="413.0" prefWidth="156.0" />
+                    <ListView fx:id="list" VBox.vgrow="ALWAYS">
+                      <VBox.margin>
+                        <Insets />
+                      </VBox.margin>
+                    </ListView>
                   </children>
                 </VBox>
                 <Button fx:id="button" mnemonicParsing="false" onAction="#handleButton" text="Button" />

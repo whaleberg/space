@@ -1,4 +1,4 @@
-package space;
+package space.ui;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,6 +20,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import space.Drawable;
+import space.GameController;
+import space.GameData;
+import space.Planet;
+import space.Rect;
+import space.Star;
+import space.Updateable;
+import space.View;
 import vector.Point2d;
 
 

@@ -19,7 +19,7 @@ public class Space extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("\\ui\\MainView.fxml"));
         
         Scene scene = new Scene(root);
         
