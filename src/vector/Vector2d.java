@@ -365,6 +365,11 @@ public class Vector2d implements java.io.Serializable {
       return Math.acos( vDot );
 
    }
+
+
+public static Vector2d getAngleVector(double angle){
+    return new Vector2d(Math.cos(angle), Math.sin(angle));
+}
    
 
    

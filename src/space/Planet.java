@@ -36,15 +36,11 @@ public class Planet extends AbstractOrbitable {
             while(orbitalAngle > 2*Math.PI){
                 orbitalAngle -= 2*Math.PI;
             }
-            Vector2d displace = getAngleVector(orbitalAngle).scale(orbitalRadius);
+            Vector2d displace = Vector2d.getAngleVector(orbitalAngle).scale(orbitalRadius);
             this.getBody().setPos(getParent().getPos().translate(displace));
         } else {
             System.err.println("Planet with null parent");
         }
-    }
-    
-    private static Vector2d getAngleVector(double angle){
-        return new Vector2d(Math.cos(angle), Math.sin(angle));
     }
     
     @Override
