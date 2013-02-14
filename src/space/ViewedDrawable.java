@@ -102,5 +102,10 @@ public class ViewedDrawable implements Drawable{
 		return d.nameProperty();
 	}
 
+	@Override
+	public Point2d getPositionIn(long seconds) {
+		return d.getPositionIn(seconds);
+	}
+
  
 }

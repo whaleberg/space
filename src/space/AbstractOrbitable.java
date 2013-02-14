@@ -13,6 +13,7 @@ import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import vector.Point2d;
+import vector.Vector2d;
 
 /**
  *
@@ -111,4 +112,20 @@ public abstract class AbstractOrbitable implements Orbitable {
         bld.put("RADIUS", this.getRadius());
         return bld.build();
     }
+    
+	@Override
+	/**
+	 * Mobile subclasses must override this and call super before moving.
+	 */
+	public Point2d getPositionIn(long seconds) {
+		Orbitable parent = getParent();
+		if(  parent != null){
+			Vector2d displacementFromParent = getPos().getVector().sub(parent.getPos().getVector() );
+			Point2d futureParentPos = parent.getPositionIn(seconds);
+			Point2d futurePos = futureParentPos.translate(displacementFromParent);
+			return futurePos;
+		} else {
+			return getPos();
+		}
+	}
 }

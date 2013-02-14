@@ -15,5 +15,6 @@ public interface Positionable {
 
     public Point2d getPos();
     public ReadOnlyObjectProperty<Point2d> posProperty();
+    public Point2d getPositionIn(long seconds);
 
 }

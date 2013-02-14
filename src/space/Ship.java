@@ -139,6 +139,10 @@ public class Ship implements Active, Drawable{
     public ImmutableMap<String, Double> getDrawingParameters() {
        return ImmutableMap.of();
     }
+	@Override
+	public Point2d getPositionIn(long seconds) {
+		return this.getPos().translate(getVelocity().scale(seconds));
+	}
 
  
     
