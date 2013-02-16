@@ -11,7 +11,7 @@ import space.Ship;
  * @author sailfish
  */
 public class WaitForeverCommand implements Command {
-        
+    public static final Command WAIT_FOREVER = new WaitForeverCommand(); 
 
     @Override
     public int followOrders(Ship s, int seconds) {
@@ -19,4 +19,6 @@ public class WaitForeverCommand implements Command {
         return Integer.MAX_VALUE;
     }
     
+    
+
 }
