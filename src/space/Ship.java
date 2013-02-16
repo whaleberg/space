@@ -21,7 +21,7 @@ import vector.Vector2d;
  * @author sailfish
  */
 public class Ship implements Active, Drawable{
-	public static double MAXSPEED = 10;
+	private double maxSpeed = 10;
 	
 	
     private final StringProperty name;
@@ -72,7 +72,7 @@ public class Ship implements Active, Drawable{
     
     public void setDesiredSpeed(double speed){
     	speed = Math.max(0, speed);
-    	speed = Math.min(speed, MAXSPEED);
+    	speed = Math.min(speed, getMaxSpeed());
     	setVelocity(getVelocity().normalize().scale(speed) );
     }
     
@@ -142,6 +142,12 @@ public class Ship implements Active, Drawable{
 	@Override
 	public Point2d getPositionIn(long seconds) {
 		return this.getPos().translate(getVelocity().scale(seconds));
+	}
+	public double getMaxSpeed() {
+		return maxSpeed;
+	}
+	public void setMaxSpeed(double maxSpeed) {
+		this.maxSpeed = maxSpeed;
 	}
 
  
