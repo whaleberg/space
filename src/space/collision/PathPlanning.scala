@@ -1,6 +1,13 @@
-package whaleberg.point
+package space.collision
 
 import scala.math._
+import vector.Point2d
+import space.Positionable
+import space.Ship
+import vector.Vector2d
+
+
+
 
 object PathPlanning {
 
@@ -39,6 +46,8 @@ object PathPlanning {
 	}
 
 
+
+	
 	/**
 	 * solve equation of the form ax+b = 0 for x
 	 */

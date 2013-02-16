@@ -1,4 +1,4 @@
-package whaleberg.point
+package space.collision
 
 
 

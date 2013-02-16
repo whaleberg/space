@@ -1,4 +1,4 @@
-package whaleberg.point
+package space.collision
 
 object PathPlanningTest extends App {
 	val p1 = new Point(10, 10)

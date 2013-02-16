@@ -1,4 +1,4 @@
-package whaleberg.point
+package space.collision
 
 /** using methods described here
  * http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
