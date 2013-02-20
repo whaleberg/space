@@ -10,6 +10,7 @@ class Point(val x: Double, val y: Double) {
 	def -(p : Point): Point = new Point(x-p.x, y-p.y)
 	def cross(p : Point): Double = x*p.y - y*p.x
 	def scale(scalar: Double): Point = new Point(x*scalar, y*scalar)
+	def magnitude():Double = scala.math.hypot(x, y)
 	override def toString() : String = "("+x+","+y+")"
 }
 

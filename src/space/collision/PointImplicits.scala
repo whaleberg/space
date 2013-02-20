@@ -21,4 +21,7 @@ object PointImplicits {
 	  new Point(x, y)
 	}
 
+	implicit def Point2Point2d(value: Point):Point2d = new Point2d(value.x, value.y)
+	
+	implicit def Point2Vector2d(value: Point):Vector2d =  value.getVector()
 }
