@@ -5,8 +5,7 @@ import vector.Point2d
 import space.Positionable
 import space.Ship
 import vector.Vector2d
-
-
+import space.collision.PointImplicits._
 
 
 object PathPlanning {
@@ -22,7 +21,7 @@ object PathPlanning {
 	 *     \ /                    \ /                           \ /
 	 *      c                      b                             a
 	 */
-	def closestCollisionWithConstantVelocity(targetPos: Point, targetVel: Point,
+	def closestPointOfIntersectionWithLinearPath(targetPos: Point, targetVel: Point, 
 			currentPos: Point, speed : Double): Option[Point] = {
 
 			val offset = targetPos - currentPos
@@ -33,20 +32,48 @@ object PathPlanning {
 			for {
 			  (r1, r2) <- solveQuadraticForRealRoots(a, b, c)
 			} yield { 
-			  val t = (r1, r2) match {
-			    case (r1, r2) if r1 >=0 && r2>=0 => min(r1, r2)
-			    case (r1, _) if r1 >= 0 => r1
-			    case (_ , r2) if r2 >= 0 => r2
-			  }
-			  
-			  val collisionPos = targetPos+targetVel.scale(t);
-			  new Point(collisionPos.x, collisionPos.y)
+			val t = (r1, r2) match {
+			  case (r1, r2) if r1 >=0 && r2>=0 => min(r1, r2)
+			  case (r1, _) if r1 >= 0 => r1
+			  case (_ , r2) if r2 >= 0 => r2
+			}
+			
+			val collisionPos = targetPos+targetVel.scale(t);
+			new Point(collisionPos.x, collisionPos.y)
 			}
 			
 	}
 
-
-
+	def timeTo(start: Point, end: Point, speed: Double)= ( (start - end).magnitude ) / speed
+	
+	def epsilonEquals(epsilon: Double, d1: Double, d2: Double): Boolean = {
+		(d1 >= d2-epsilon) && (d1 <= d2+epsilon)
+	}
+	
+	def closestPointOfIntersectionWithArbitraryPath(targetPos: Point, getFuturePos: Double => Point, 
+					currentPos: Point, currentSpeed: Double): Option[Point] = {
+	  val epsilon = .1
+	  var estimatedTime = timeTo(targetPos, currentPos, currentSpeed)
+	  var tmpPos = getFuturePos(estimatedTime)
+	  var counts = 0;
+	  while( !epsilonEquals (epsilon, estimatedTime , 
+			  				timeTo(currentPos,tmpPos, currentSpeed))){
+		 estimatedTime = timeTo(tmpPos, currentPos, currentSpeed)
+		 tmpPos = getFuturePos(estimatedTime)
+		 System.out.println(estimatedTime+" " + tmpPos)
+		 if(counts >= 100){
+		   return None
+		 }
+	  }
+	  Some(tmpPos)
+	}
+	
+	
+	def closestPointOfIntersectionWithCircularPath(targetPos: Point, targetSpeed: Double, 
+						currentPos: Point, currentSpeed: Double): Option[Point]= {
+	  
+	  None
+	}
 	
 	/**
 	 * solve equation of the form ax+b = 0 for x
