@@ -117,7 +117,7 @@ public abstract class AbstractOrbitable implements Orbitable {
 	/**
 	 * Mobile subclasses must override this and call super before moving.
 	 */
-	public Point2d getPositionIn(long seconds) {
+	public Point2d getPositionIn(double seconds) {
 		Orbitable parent = getParent();
 		if(  parent != null){
 			Point2d futureParentPos = parent.getPositionIn(seconds);

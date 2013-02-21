@@ -140,7 +140,7 @@ public class Ship implements Active, Drawable{
        return ImmutableMap.of();
     }
 	@Override
-	public Point2d getPositionIn(long seconds) {
+	public Point2d getPositionIn(double seconds) {
 		return this.getPos().translate(getVelocity().scale(seconds));
 	}
 	public double getMaxSpeed() {

@@ -45,7 +45,7 @@ public class Planet extends AbstractOrbitable {
         }
     }
 
-	private double getOrbitalAngleIn(long seconds) {
+	private double getOrbitalAngleIn(double seconds) {
 		return orbitalAngle + calculateChangeInOrbitalAngle(seconds);
 	}
 	
@@ -68,13 +68,13 @@ public class Planet extends AbstractOrbitable {
 	 * @param seconds
 	 * @return
 	 */
-	private double calculateChangeInOrbitalAngle(long seconds) {
+	private double calculateChangeInOrbitalAngle(double seconds) {
 		double changeInAngle = (seconds / orbitalPeriod )*2*Math.PI;
 		return changeInAngle;
 	}
     
     @Override
-	public Point2d getPositionIn(long seconds) {
+	public Point2d getPositionIn(double seconds) {
     	return super.getPositionIn(seconds).translate(
     			getDisplacementFromParent(getOrbitalAngleIn(seconds)));		
     }

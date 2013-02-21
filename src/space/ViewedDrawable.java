@@ -103,7 +103,7 @@ public class ViewedDrawable implements Drawable{
 	}
 
 	@Override
-	public Point2d getPositionIn(long seconds) {
+	public Point2d getPositionIn(double seconds) {
 		return d.getPositionIn(seconds);
 	}
 
