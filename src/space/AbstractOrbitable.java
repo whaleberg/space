@@ -120,10 +120,8 @@ public abstract class AbstractOrbitable implements Orbitable {
 	public Point2d getPositionIn(long seconds) {
 		Orbitable parent = getParent();
 		if(  parent != null){
-			Vector2d displacementFromParent = getPos().getVector().sub(parent.getPos().getVector() );
 			Point2d futureParentPos = parent.getPositionIn(seconds);
-			Point2d futurePos = futureParentPos.translate(displacementFromParent);
-			return futurePos;
+			return futureParentPos;
 		} else {
 			return getPos();
 		}

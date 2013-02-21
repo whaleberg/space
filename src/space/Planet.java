@@ -27,7 +27,7 @@ public class Planet extends AbstractOrbitable {
     public Planet(double orbitalRadius, double orbitalPeriod, double orbitalAngle){
         this.orbitalRadius = orbitalRadius;
         this.orbitalPeriod = orbitalPeriod;
-        this.orbitalAngle = orbitalAngle;
+        this.setOrbitalAngle(orbitalAngle);
     }
    
  
@@ -37,31 +37,46 @@ public class Planet extends AbstractOrbitable {
      */
     private void orbit(long seconds){
         if (getParent() != null){
-            Vector2d displace = calculateDisplacement(seconds);
+        	this.setOrbitalAngle(getOrbitalAngleIn(seconds));
+            Vector2d displace = getDisplacementFromParent(orbitalAngle);
             this.getBody().setPos(getParent().getPos().translate(displace));
         } else {
             System.err.println("Planet with null parent");
         }
     }
 
-    /**
-     * Calculate the displacement vector for moving a planet along it's orbit
-     * @param seconds
-     * @return
-     */
-	private Vector2d calculateDisplacement(long seconds) {
-		double changeInAngle = (seconds / orbitalPeriod )*2*Math.PI;
-		orbitalAngle += changeInAngle;
-		while(orbitalAngle > 2*Math.PI){
-		    orbitalAngle -= 2*Math.PI;
-		}
-		Vector2d displace = Vector2d.getAngleVector(orbitalAngle).scale(orbitalRadius);
+	private double getOrbitalAngleIn(long seconds) {
+		return orbitalAngle + calculateChangeInOrbitalAngle(seconds);
+	}
+	
+	private void setOrbitalAngle(double orbitalAngle) {
+		this.orbitalAngle = orbitalAngle % (2*Math.PI);
+	}
+
+	/**
+	 * returns a vector from the parents position to the position of the planet at orbitalAngle theta
+	 * @param theta
+	 * @return
+	 */
+	private Vector2d getDisplacementFromParent(double theta) {
+		Vector2d displace = Vector2d.getAngleVector(theta).scale(orbitalRadius);
 		return displace;
+	}
+
+	/**
+	 * determines what angle the planet passes through in seconds time
+	 * @param seconds
+	 * @return
+	 */
+	private double calculateChangeInOrbitalAngle(long seconds) {
+		double changeInAngle = (seconds / orbitalPeriod )*2*Math.PI;
+		return changeInAngle;
 	}
     
     @Override
 	public Point2d getPositionIn(long seconds) {
-    	return super.getPositionIn(seconds).translate(calculateDisplacement(seconds));		
+    	return super.getPositionIn(seconds).translate(
+    			getDisplacementFromParent(getOrbitalAngleIn(seconds)));		
     }
 
 	@Override
