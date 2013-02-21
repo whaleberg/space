@@ -56,11 +56,16 @@ object PathPlanning {
 	  var estimatedTime = timeTo(targetPos, currentPos, currentSpeed)
 	  var tmpPos = getFuturePos(estimatedTime)
 	  var counts = 0;
-	  while( !epsilonEquals (epsilon, estimatedTime , 
+	  var farthest = 0.0;
+	  
+	  while( !epsilonEquals (currentSpeed, estimatedTime , 
 			  				timeTo(currentPos,tmpPos, currentSpeed))){
+		
+	    System.out.println("est:"+estimatedTime+","+"pos:"+tmpPos);
+		 counts+=1
 		 estimatedTime = timeTo(tmpPos, currentPos, currentSpeed)
+		 farthest = scala.math.max(farthest, estimatedTime);
 		 tmpPos = getFuturePos(estimatedTime)
-		 System.out.println(estimatedTime+" " + tmpPos)
 		 if(counts >= 100){
 		   return None
 		 }
@@ -68,6 +73,21 @@ object PathPlanning {
 	  Some(tmpPos)
 	}
 	
+	def canCatchUpTo(mover: Ship, target:Positionable){
+
+	
+	  val result = closestPointOfIntersectionWithArbitraryPath(target.getPos(), ( x: Double )=> target.getPositionIn(x.toLong), 
+			  								mover.getPos(), mover.getMaxSpeed())
+      result.isDefined
+	}
+	
+	def getClosestIntersectionPoint(target: Positionable, mover : Ship):Point2d = {
+	  closestPointOfIntersectionWithArbitraryPath(target.getPos(), (x:Double) => target.getPositionIn(x.toLong), 
+	      mover.getPos(), mover.getMaxSpeed()) match{
+	    case Some(value) => return value
+	    case None => throw new AssertionError("Can't catch the target");
+	  }
+	}
 	
 	def closestPointOfIntersectionWithCircularPath(targetPos: Point, targetSpeed: Double, 
 						currentPos: Point, currentSpeed: Double): Option[Point]= {
