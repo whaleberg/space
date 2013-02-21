@@ -51,8 +51,18 @@ public class Point2d implements java.io.Serializable {
 
     // Compatible with 1.1
     static final long serialVersionUID = 1133748791492571954L;
+    
+	/**
+	 * The epsilon value used to determine if 2 points are "close enough" to be
+	 * considered overlapping.
+	 */
+	public static final double EPSILON = 1;
     private final Vector2d vect;
 
+    public boolean closeEnough(Point2d p){
+    	return this.getVector().epsilonEquals(p.getVector(), EPSILON);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
