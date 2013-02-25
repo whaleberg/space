@@ -1,5 +1,7 @@
 package space.collision
 
+import space.collision.PointImplicits._
+
 /** using methods described here
  * http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
  */
@@ -12,6 +14,15 @@ class Point(val x: Double, val y: Double) {
 	def scale(scalar: Double): Point = new Point(x*scalar, y*scalar)
 	def magnitude():Double = scala.math.hypot(x, y)
 	override def toString() : String = "("+x+","+y+")"
+	def equals(p: Point):Boolean = (this.x==p.x) && (this.y == p.y)
+	def ==(p:Point): Boolean = equals(p)
+	
+	
+	def assertCloseEnough(p1: Point, p2: Point)= {
+	  if(!p1.closeEnough(p2)) {
+	    throw new AssertionError(p1 + "not close enough to " + p2)
+	  }
+	}
 }
 
 abstract class Intersection()
