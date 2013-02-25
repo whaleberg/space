@@ -44,45 +44,69 @@ object PathPlanning {
 			
 	}
 
-	def timeTo(start: Point, end: Point, speed: Double)= ( (start - end).magnitude ) / speed
+	def timeTo(speed: Double, start: Point, end: Point)= ( (start - end).magnitude ) / speed
 	
-	def epsilonEquals(epsilon: Double, d1: Double, d2: Double): Boolean = {
-		(d1 >= d2-epsilon) && (d1 <= d2+epsilon)
-	}
-	
-	def closestPointOfIntersectionWithArbitraryPath(targetPos: Point, getFuturePos: Double => Point, 
-					currentPos: Point, currentSpeed: Double): Option[Point] = {
-	  val epsilon = .1
-	  var estimatedTime = timeTo(targetPos, currentPos, currentSpeed)
-	  var tmpPos = getFuturePos(estimatedTime)
-	  var counts = 0;
-	  var farthest = 0.0;
+	def closestPointOfIntersectionWithBoundedPath(targetPos: Point, getFuturePos: Double => Point,
+	    	pos: Point, speed: Double): Option[Point] = {
+	  val timeToTarget = (target: Point) => timeTo(speed, pos, target)
+	  val initialTimeGuess = timeToTarget(targetPos)
 	  
-	  while( !epsilonEquals (currentSpeed, estimatedTime , 
-			  				timeTo(currentPos,tmpPos, currentSpeed))){
-		
-	    System.out.println("est:"+estimatedTime+","+"pos:"+tmpPos);
-		 counts+=1
-		 estimatedTime = timeTo(tmpPos, currentPos, currentSpeed)
-		 farthest = scala.math.max(farthest, estimatedTime);
-		 tmpPos = getFuturePos(estimatedTime)
-		 if(counts >= 100){
-		   return None
-		 }
+	  var minimumTime = initialTimeGuess
+	  var currentPositionGuess = targetPos
+	  
+	  while(notDone){
+	    minimumTime = math.min(minimumTime, timeToTarget(currentPositionGuess))
 	  }
-	  Some(tmpPos)
+	  
 	}
+	
+	
+//	def closestPointOfIntersectionWithBoundedPath(targetPos: Point, getFuturePos: Double => Point, 
+//					pos: Point, speed: Double): Option[Point] = {
+//
+//	  
+//	  def searchUp(targetPos: Point):Some[Double] = {
+//		   
+//		   val initialTime = timeToTarget(targetPos)
+//		   val futurePos = getFuturePos(initialTime)
+//		   val timeToFuture = timeToTarget(futurePos)
+//		   if( timeToFuture <= initialTime){
+//		     Some(timeToFuture)
+//		   } else{
+//		     searchUp(futurePos)
+//		   }
+//	  }
+//	  
+//	   def searchDown(maxTime: Double):Double = {
+//		val futurePos = getFuturePos(maxTime)
+//		val timeToFuture = timeToTarget(futurePos)
+//		if( timeToFuture < maxTime){
+//		  searchDown(timeToFuture)
+//		} else {
+//			timeToFuture
+//		}
+//		
+//	  }
+//	  
+//	  val turnAround = searchUp(targetPos);
+//	  for{time <- turnAround;
+//	  	  minTime = searchDown(time)
+//	  	  } 
+//	  yield{ getFuturePos(minTime)}
+//
+//	}
+
 	
 	def canCatchUpTo(mover: Ship, target:Positionable){
 
 	
-	  val result = closestPointOfIntersectionWithArbitraryPath(target.getPos(), ( x: Double )=> target.getPositionIn(x.toLong), 
+	  val result = closestPointOfIntersectionWithBoundedPath(target.getPos(), ( x: Double )=> target.getPositionIn(x.toLong), 
 			  								mover.getPos(), mover.getMaxSpeed())
       result.isDefined
 	}
 	
 	def getClosestIntersectionPoint(target: Positionable, mover : Ship):Point2d = {
-	  closestPointOfIntersectionWithArbitraryPath(target.getPos(), (x:Double) => target.getPositionIn(x.toLong), 
+	  closestPointOfIntersectionWithBoundedPath(target.getPos(), (x:Double) => target.getPositionIn(x.toLong), 
 	      mover.getPos(), mover.getMaxSpeed()) match{
 	    case Some(value) => return value
 	    case None => throw new AssertionError("Can't catch the target");
