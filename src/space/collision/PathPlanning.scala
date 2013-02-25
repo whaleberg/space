@@ -48,15 +48,29 @@ object PathPlanning {
 	
 	def closestPointOfIntersectionWithBoundedPath(targetPos: Point, getFuturePos: Double => Point,
 	    	pos: Point, speed: Double): Option[Point] = {
-	  val timeToTarget = (target: Point) => timeTo(speed, pos, target)
+	  def timeToTarget = (target: Point) => timeTo(speed, pos, target)
+	  
+	  def timeToTargetAtTime(t: Double):Double= timeToTarget(getFuturePos(t))
 	  val initialTimeGuess = timeToTarget(targetPos)
 	  
-	  var minimumTime = initialTimeGuess
-	  var currentPositionGuess = targetPos
-	  
-	  while(notDone){
-	    minimumTime = math.min(minimumTime, timeToTarget(currentPositionGuess))
+	  if(speed == 0){
+	    return None
 	  }
+	  
+	  var time = 1.0  
+	  val CUTOFF = Double.MaxValue
+	  while (time < timeToTargetAtTime(time)){
+	      time = time*2
+	      if(time > CUTOFF){
+	    	  throw new IllegalArgumentException("Path should be bounded, but a solution cannot be found.")
+	      }
+	   }
+	  
+	  val maxTime = time
+	  while(timeToTargetAtTime(time) != time){
+	    time = (time + timeToTargetAtTime(time))/2
+	  }
+	  return Some(getFuturePos(time))
 	  
 	}
 	

@@ -70,21 +70,39 @@ class PathPlanningTest extends JUnitSuite{
 
 	}
 	
+	
+	
 	@Test def testIntersectionWithBounded_circular()= {
-	  val speed = 1
+	  println("testIntersectionWithBounded_circular")
+	  val speed = 2
 	  val startPos = new Point(0,0)
 	  val target = closestPointOfIntersectionWithBoundedPath(planet.getPos(), planet.getPositionIn _
 	      ,startPos, speed)
-	  println("Target pos = " + target)
+
 	  val timeToTarget = timeTo(speed,startPos, target.get)
-	  println("Time to Target" + timeToTarget)
-	  val planetAtTarget = planet.getPositionIn(timeToTarget)
+	  star.age(timeToTarget.toInt)
+	  val planetAtTarget = planet.getPos()
+	  println("Target pos:" + target)
+	  println("Time to Target:" + timeToTarget)
 	  println("Planet at target time " + planetAtTarget )
 	  assertCloseEnough(planetAtTarget, target.get)
 	}
 	
+	@Test def testIntersectionWithBounded_moon()= {
+	  println("testIntersectionWithBounded_moon")
+	  val speed = 2
+	  val startPos = new Point(0,0)
+	  val target = closestPointOfIntersectionWithBoundedPath(moon.getPos(), moon.getPositionIn _
+	      ,startPos, speed)
+	    val timeToTarget = timeTo(speed,startPos, target.get)
+	  star.age(timeToTarget.toInt)
+	  val planetAtTarget = moon.getPos()
+	  println("Target pos:" + target)
+	  println("Time to Target:" + timeToTarget)
+	  println("Planet at target time " + planetAtTarget )
+	  assertCloseEnough(planetAtTarget, target.get)
+	}
+
 	
-
-
 
 }
