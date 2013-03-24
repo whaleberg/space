@@ -44,7 +44,32 @@ object PathPlanning {
 			
 	}
 
-	def timeTo(speed: Double, start: Point, end: Point)= ( (start - end).magnitude ) / speed
+	def linearIntersection(target: Ship, ship: Ship):Point2d= {
+	  closestPointOfIntersectionWithLinearPath(target.getPos(), target.getVelocity()
+	      , ship.getPos(), ship.getMaxSpeed()) match {
+	    case None => null
+	    case Some(point) => point
+	  }
+	}
+	
+	def orbitalIntersection(target: Positionable, ship: Ship):Point2d= {
+	  closestPointOfIntersectionWithBoundedPath(target.getPos(), target.getPositionIn _
+			  , ship.getPos(), ship.getMaxSpeed()) match {
+	    case None => null
+	    case Some(point) => point 
+	  }
+	}
+	
+	def stationaryIntersection(target: Positionable, ship: Ship):Point2d= {
+		if (ship.getMaxSpeed() == 0) {
+		  null
+		} else {
+		  target.getPos()
+		}
+	}
+	
+	
+	def timeTo(speed: Double, start: Point2d, end: Point2d)= ( (start - end).magnitude ) / speed
 	
 	def closestPointOfIntersectionWithBoundedPath(targetPos: Point, getFuturePos: Double => Point,
 	    	pos: Point, speed: Double): Option[Point] = {
@@ -74,63 +99,13 @@ object PathPlanning {
 	  
 	}
 	
-	
-//	def closestPointOfIntersectionWithBoundedPath(targetPos: Point, getFuturePos: Double => Point, 
-//					pos: Point, speed: Double): Option[Point] = {
-//
-//	  
-//	  def searchUp(targetPos: Point):Some[Double] = {
-//		   
-//		   val initialTime = timeToTarget(targetPos)
-//		   val futurePos = getFuturePos(initialTime)
-//		   val timeToFuture = timeToTarget(futurePos)
-//		   if( timeToFuture <= initialTime){
-//		     Some(timeToFuture)
-//		   } else{
-//		     searchUp(futurePos)
-//		   }
-//	  }
-//	  
-//	   def searchDown(maxTime: Double):Double = {
-//		val futurePos = getFuturePos(maxTime)
-//		val timeToFuture = timeToTarget(futurePos)
-//		if( timeToFuture < maxTime){
-//		  searchDown(timeToFuture)
-//		} else {
-//			timeToFuture
-//		}
-//		
-//	  }
-//	  
-//	  val turnAround = searchUp(targetPos);
-//	  for{time <- turnAround;
-//	  	  minTime = searchDown(time)
-//	  	  } 
-//	  yield{ getFuturePos(minTime)}
-//
-//	}
-
-	
-	def canCatchUpTo(mover: Ship, target:Positionable){
-
-	
-	  val result = closestPointOfIntersectionWithBoundedPath(target.getPos(), ( x: Double )=> target.getPositionIn(x.toLong), 
-			  								mover.getPos(), mover.getMaxSpeed())
-      result.isDefined
-	}
-	
+		
 	def getClosestIntersectionPoint(target: Positionable, mover : Ship):Point2d = {
 	  closestPointOfIntersectionWithBoundedPath(target.getPos(), (x:Double) => target.getPositionIn(x.toLong), 
 	      mover.getPos(), mover.getMaxSpeed()) match{
 	    case Some(value) => return value
 	    case None => throw new AssertionError("Can't catch the target");
 	  }
-	}
-	
-	def closestPointOfIntersectionWithCircularPath(targetPos: Point, targetSpeed: Double, 
-						currentPos: Point, currentSpeed: Double): Option[Point]= {
-	  
-	  None
 	}
 	
 	/**

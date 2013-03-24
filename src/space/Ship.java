@@ -13,6 +13,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import space.collision.PathPlanning;
 import space.mission.Mission;
 import vector.Point2d;
 import vector.Vector2d;
@@ -148,6 +149,11 @@ public class Ship implements Active, Drawable{
 	}
 	public void setMaxSpeed(double maxSpeed) {
 		this.maxSpeed = maxSpeed;
+	}
+	@Override
+	public Point2d getIntersectionPoint(Ship s) {
+		return PathPlanning.linearIntersection(this, s);
+
 	}
 
  

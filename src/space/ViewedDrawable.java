@@ -107,5 +107,10 @@ public class ViewedDrawable implements Drawable{
 		return d.getPositionIn(seconds);
 	}
 
+	@Override
+	public Point2d getIntersectionPoint(Ship s) {
+		return d.getIntersectionPoint(s);
+	}
+
  
 }

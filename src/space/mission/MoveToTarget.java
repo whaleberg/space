@@ -4,6 +4,10 @@
  */
 package space.mission;
 
+import java.nio.file.Path;
+
+import space.collision.PathPlanning;
+
 import space.Positionable;
 import space.Ship;
 import vector.Point2d;
@@ -28,18 +32,18 @@ public class MoveToTarget implements Mission{
         if(s.getPos().distance(target.getPos()) < CLOSE_ENOUGH){
             return WaitForeverCommand.WAIT_FOREVER;
         } else {
-        	Point2d destination = computeClosestIntercept(s, target);
-            return new TravelToPoint(destination);
+        	Point2d destination = target.getIntersectionPoint(s);
+        	if (destination != null){
+        		return new TravelToPoint(destination);
+        	} else {
+        		return WaitForeverCommand.WAIT_FOREVER;
+        	}
         }
     }
+    
+    
 
-	private Point2d computeClosestIntercept(Ship s, Positionable target) {
-		double startDistance = s.getPos().distance(target.getPos());
-		double timeToCoverStartDistance = startDistance / s.getMaxSpeed();
-		if (target.getPos() == target.getPositionIn((long) timeToCoverStartDistance));
-		
-		return null;
-	}
+	
     
     
 }

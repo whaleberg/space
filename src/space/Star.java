@@ -4,6 +4,7 @@
  */
 package space;
 
+import space.collision.PathPlanning;
 import vector.Point2d;
 
 /**
@@ -30,4 +31,10 @@ public class Star extends AbstractOrbitable{
         return "Star:"+super.getID();
     }
 
+	@Override
+	public Point2d getIntersectionPoint(Ship s) {
+		return PathPlanning.stationaryIntersection(this, s);
+	}
+
+    
 }

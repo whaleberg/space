@@ -5,6 +5,7 @@
 package space;
 
 
+import space.collision.PathPlanning;
 import vector.Point2d;
 import vector.Vector2d;
 
@@ -101,6 +102,11 @@ public class Planet extends AbstractOrbitable {
     public String getID(){
         return "Planet:"+super.getID();
     }
+
+	@Override
+	public Point2d getIntersectionPoint(Ship s) {
+		return PathPlanning.orbitalIntersection(this, s);
+	}
 
 
     
