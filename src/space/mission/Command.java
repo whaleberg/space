@@ -11,6 +11,8 @@ import space.Ship;
  * @author sailfish
  */
 public interface Command {
+	/**
+	 * Causes a ship to perform the action assigned to it*/
     public int followOrders(Ship s, int seconds);
 }
 
